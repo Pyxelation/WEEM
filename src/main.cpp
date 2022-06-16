@@ -1,17 +1,10 @@
-#include "raylib/raylib.h"
+#include "game.h"
 
 int main() {
 
-   InitWindow(800, 450, "Hello World");
+   Game game = Game(450, 800, RAYWHITE, "Hello world!");
 
-   while(!WindowShouldClose()) {
-      BeginDrawing();
-         ClearBackground(RAYWHITE);
-         DrawText("Hello World!", 300, 200, 30, BLACK);
-      EndDrawing();
-   }
-
-   CloseWindow();
+   game.run();
 
    return 0;
 }
