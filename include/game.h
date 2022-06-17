@@ -1,8 +1,10 @@
-#ifndef game_h
-#define game_h
+#ifndef WEEM_game_h
+#define WEEM_game_h
 
 #include "raylib/raylib.h"
 #include <string>
+#include <vector>
+#include "entity.h"
 
 class Game {
    public:
@@ -21,6 +23,7 @@ class Game {
       void setWindowTitle(std::string const title);
       std::string getWindowTitle() const;
 
+      void addEntity(int x, int y, char character);
       void draw() const;
       void run();
 
@@ -29,6 +32,8 @@ class Game {
       int windowWidth;
       Color drawClearColor;
       std::string windowTitle;
+      std::vector<Entity> entities;
+      
 };
 
 #endif
