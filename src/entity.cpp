@@ -19,3 +19,7 @@ void Entity::setId(int const id) {
 void Entity::update() {
 
 }
+
+void Entity::draw() {
+   DrawText(character.c_str(), position.x, position.y, 30, BLACK);
+}

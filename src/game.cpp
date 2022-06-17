@@ -33,7 +33,7 @@ void Game::draw() const {
       // draw all entities
       for(size_t i=0;i<entities.size();i++) {
          Entity* e = entities[i];
-         DrawText(e->character.c_str(), e->position.x, e->position.y, 30, BLACK);
+         e->draw();
       }
 
    EndDrawing();

@@ -5,13 +5,15 @@
 
 class Player: public Entity {
    public:
-      //de-/constructor
+      // constructor
       Player(int const x, int const y, char character);
+      // deconstructor
       ~Player();
 
+      // update the entity
+      // called every frame
       virtual void update();
 
-      
 };
 
 #endif
