@@ -3,8 +3,15 @@
 
 // Includes
 #include <iostream>
+#include <string>
 
 // defines
-#define print(x) std::cout << x << std::endl;
+#define IMG_PATH "/Users/justinslingerland/Desktop/Projects/WEEM/img/"
+
+#define INFO 1
+#define WARNING 2
+#define ERROR 3
+
+void print(std::string input, int level=INFO);
 
 #endif

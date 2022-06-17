@@ -1,5 +1,4 @@
 #include "game.h"
-#include "macro.h"
 
 Game::Game():windowHeight(450), windowWidth(800), drawClearColor(RAYWHITE), windowTitle("") {
    InitWindow(windowWidth, windowHeight, windowTitle.c_str());

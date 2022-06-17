@@ -6,7 +6,7 @@
 class Player: public Entity {
    public:
       // constructor
-      Player(int const x, int const y, char character);
+      Player(int const x, int const y, Sprite* sprite=nullptr);
       // deconstructor
       ~Player();
 

@@ -3,13 +3,14 @@
 
 #include "raylib/raylib.h"
 #include <string>
+#include "sprite.h"
 
 class Entity {
    public:
       // default constructor
       Entity();
       // constructor
-      Entity(int const x, int const y, char const character);
+      Entity(int const x, int const y, Sprite* sprite=nullptr);
       virtual ~Entity();
 
       // set the id of the entity
@@ -28,8 +29,8 @@ class Entity {
       // a vector containing the x and y position of the entity
       Vector2 position;
 
-      // TEMP: a string containing the char representing the entity
-      std::string character;
+      // sprite of the entity
+      Sprite* sprite;
    
    protected:
       // the id of the entity

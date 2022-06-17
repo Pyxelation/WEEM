@@ -1,7 +1,7 @@
 #include "player.h"
 
-Player::Player(int const x, int const y, char const character):
-Entity(x, y, character) {
+Player::Player(int const x, int const y, Sprite* sprite):
+Entity(x, y, sprite) {
    // empty
 }
 
@@ -18,4 +18,9 @@ void Player::update() {
 
       position.x += velocity.x;
       position.y += velocity.y;
+
+      if(sprite != nullptr) {
+         sprite->rotation += (IsKeyDown(KEY_RIGHT) - IsKeyDown(KEY_LEFT)) * 0.1f;
+         if(IsKeyPressed(KEY_ENTER)) sprite->rotation = 0;
+      }
 }

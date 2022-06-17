@@ -1,13 +1,13 @@
 #include "entity.h"
 #include "macro.h"
 
-Entity::Entity(int const x, int const y, char const character):
-position(Vector2{(float)x, (float)y}), character("") {
-   this->character += character;
+Entity::Entity(int const x, int const y, Sprite* sprite):
+position(Vector2{(float)x, (float)y}), sprite(sprite) {
+   // empty
 }
 
 Entity::~Entity() {
-   print("INFO: ENTITY: [ID " << id << "] deleted succesfully");
+   print("INFO: ENTITY: [ID " + std::to_string(id) + "] deleted succesfully");
 }
 
 void Entity::setId(int const id) {
@@ -21,5 +21,7 @@ void Entity::update() {
 }
 
 void Entity::draw() {
-   DrawText(character.c_str(), position.x, position.y, 30, BLACK);
+   if(sprite == nullptr) return;
+
+   sprite->draw((float)position.x, (float)position.y);
 }
