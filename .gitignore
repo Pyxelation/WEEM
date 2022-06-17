@@ -53,3 +53,4 @@ output/
 .vscode/
 *.o
 misc/
+makefile
