@@ -23,7 +23,7 @@ class Game {
       void setWindowTitle(std::string const title);
       std::string getWindowTitle() const;
 
-      void addEntity(int x, int y, char character);
+      void addEntity(Entity* entity);
       void draw() const;
       void run();
 
@@ -32,7 +32,7 @@ class Game {
       int windowWidth;
       Color drawClearColor;
       std::string windowTitle;
-      std::vector<Entity> entities;
+      std::vector<Entity*> entities;
       
 };
 
