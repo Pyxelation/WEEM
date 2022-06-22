@@ -1,5 +1,5 @@
 **This is my attempt at a really bare-bones engine to make games.**
-*(This is more like a helpful library to make life easier)*
+*(This is more like a helpful framework to make life easier)*
 
 This 'engine' implements [raylib](https://www.raylib.com) to take care om input and screen output.
 

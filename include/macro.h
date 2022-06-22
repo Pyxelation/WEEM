@@ -6,12 +6,14 @@
 #include <string>
 
 // defines
-#define IMG_PATH "/Users/justinslingerland/Desktop/Projects/WEEM/img/"
+#define ROOT (std::string)"/Users/justinslingerland/Desktop/Projects/WEEM/"
 
 #define INFO 1
 #define WARNING 2
 #define ERROR 3
 
 void print(std::string input, int level=INFO);
+
+std::string getPointer(void* ptr);
 
 #endif

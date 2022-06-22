@@ -1,35 +1,76 @@
 #include "sprite.h"
 #include "macro.h"
 
-Sprite::Sprite(std::string const img_name, int const rotation, int const frame_x, int const frame_y, int const frames, 
-   float const frameSpeed, float scale):
-rotation(rotation), frames(frames), frameIndex(0), frameSpeed(frameSpeed), scale(scale) {
-   std::string filePath = IMG_PATH + img_name;
-   if(FileExists(filePath.c_str())) {
-      texture = LoadTexture(filePath.c_str());
+Sprite::Sprite(std::string img_path, int const frame_x, int const frame_y, int const frames): frames(frames) {
+   print("INFO: SPRITE: created at [*]:" + getPointer((void*)this));
+   if(FileExists(img_path.c_str())) {
+      texture = LoadTexture(img_path.c_str());
       frameHeight = texture.height/frame_y;
       frameWidth = texture.width/frame_x;
    } else {
-      print("WARNING: File at '" + (std::string)IMG_PATH + img_name + "' not found!", WARNING);
+      print("WARNING: File at '" + img_path + "' not found!", WARNING);
       frameHeight = 0;
       frameWidth = 0;
    }
 }
 
-void Sprite::draw(float x=0, float y=0) {
+Sprite::~Sprite() {
+   print("INFO: SPRITE: deleted at [*]:" + getPointer((void*)this));
+}
+
+void Sprite::draw(Vector2 position, int index, Vector2 scale, float rotation) {
    if(frameHeight == 0 || frameWidth == 0) return;
 
-   int xIndex = frameIndex%(texture.width/frameWidth);
-   int yIndex = frameIndex/(texture.width/frameWidth);
+   int xIndex = index%(texture.width/frameWidth);
+   int yIndex = index/(texture.width/frameWidth);
 
    float recX = (float)(xIndex*frameWidth);
    float recY = (float)(yIndex*frameHeight);
-   Rectangle sourceRec = { recX, recY, recX+(float)frameWidth, recY+(float)frameHeight };
+   Rectangle sourceRec = { recX, recY, (float)frameWidth*scale.x, (float)frameHeight*scale.y };
 
-   Rectangle destRec = { x, y, frameWidth*scale, frameHeight*scale };
+   Rectangle destRec = { position.x, position.y, frameWidth*abs(scale.x), frameHeight*abs(scale.y) };
 
-   Vector2 origin = { ((float)frameWidth/2.0f)*scale, ((float)frameHeight/2.0f)*scale };
+   Vector2 origin = { ((float)frameWidth/2.0f)*abs(scale.x), ((float)frameHeight/2.0f)*abs(scale.y) };
 
-   DrawTexturePro(texture, sourceRec, destRec, origin, (float)rotation, WHITE);
+   DrawTexturePro(texture, sourceRec, destRec, origin, rotation, WHITE);
 
+}
+
+/* ########################################################################################################## //
+################################################################################################################
+// ########################################################################################################## */
+
+SpriteHandler::SpriteHandler() {
+ // empty
+}
+
+SpriteHandler::~SpriteHandler() {
+   for (auto const& [key, val] : instance().sprites) {
+      if(val != nullptr) {
+         print("INFO: SPRITE: HANDLER: deleted sprite [" + key + "]");
+         delete val;
+      }
+   }
+}
+
+Sprite* SpriteHandler::IgetSprite(std::string subPath) const {
+   return instance().sprites.at(subPath);
+}
+
+bool SpriteHandler::IspriteExists(std::string subPath) const {
+   return instance().sprites.count(subPath) > 0;
+}
+
+void SpriteHandler::IaddSprite(std::string img_path, int const frame_x, int const frame_y, int const frames) {
+   Sprite* sprite = new Sprite(img_path, frame_x, frame_y, frames);
+   size_t pos = 0;
+   while ((pos = img_path.find("/")) != std::string::npos) {
+      std::string tmp = img_path.substr(0, pos);
+      img_path.erase(0, pos + 1);
+   }
+   
+   std::string key = img_path.substr(0, img_path.length()-4);
+   instance().sprites.emplace(key, sprite);
+   sprite = nullptr;
+   print("INFO: SPRITE: HANDLER: Added sprite [" + img_path + "] to the map");
 }

@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 #include "entity.h"
+#include "macro.h"
 
 class Game {
    public:
