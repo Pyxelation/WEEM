@@ -8,11 +8,13 @@
 // defines
 #define ROOT (std::string)"/Users/justinslingerland/Desktop/Projects/WEEM/"
 
-#define INFO 1
-#define WARNING 2
-#define ERROR 3
+enum level {
+   INFO,
+   WARNING,
+   ERROR
+};
 
-void print(std::string input, int level=INFO);
+void print(std::string input, level level=level::INFO);
 
 std::string getPointer(void* ptr);
 

@@ -5,18 +5,18 @@
 // INFO: for white text
 // WARNING: for yellow text
 // ERROR: for red text
-void print(std::string input, int level) {
+void print(std::string input, level level) {
    switch(level) {
       default:
-      case INFO:
+      case level::INFO:
          std::cout << input << std::endl;
       break;
 
-      case WARNING:
+      case level::WARNING:
          std::cout << "\033[33m" << input << "\033[0m" << std::endl;
       break;
 
-      case ERROR:
+      case level::ERROR:
          std::cout << "\033[31m" << input << "\033[0m" << std::endl;
       break;
    }

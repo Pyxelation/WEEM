@@ -13,7 +13,7 @@ class Sprite {
       // frame x and y are the amount of frames in de x- and y-axis of the image
       // frames is the total amount of frames in the image
       // frameSpeed is how fast you want the frame to change
-      Sprite(std::string img_path, int const frame_x, int const frame_y, int const frames);
+      Sprite(std::string img_path, int const frame_x, int const frame_y, int const frames, Vector2 origin={0.0f, 0.0f});
       ~Sprite();
 
       // amount of frames
@@ -30,6 +30,9 @@ class Sprite {
       int frameHeight;
       // the width of an individual frame
       int frameWidth;
+      // origin of the sprite
+      // values should be between 0 and 1, i.e. 0.73f
+      Vector2 origin;
 };
 
 /* ########################################################################################################## //
@@ -45,6 +48,9 @@ class SpriteHandler {
          return INSTANCE;
       }
 
+      SpriteHandler(SpriteHandler const&) = delete;
+      void operator=(SpriteHandler const&) = delete;
+
       static bool spriteExists(std::string subPath) {
          return instance().IspriteExists(subPath);
       }
@@ -52,17 +58,17 @@ class SpriteHandler {
          return instance().IgetSprite(subPath);
       }
 
-      static void addSprite(std::string img_path, int const frame_x, int const frame_y, int const frames) {
-         instance().IaddSprite(img_path, frame_x, frame_y, frames);
+      static void addSprite(std::string img_path, int const frame_x, int const frame_y, int const frames, Vector2 origin={0.0f, 0.0f}) {
+         instance().IaddSprite(img_path, frame_x, frame_y, frames, origin);
       }
 
    private:
       bool IspriteExists(std::string subpath) const;
       Sprite* IgetSprite(std::string subPath) const;
-      void IaddSprite(std::string img_path, int const frame_x, int const frame_y, int const frames);
+      void IaddSprite(std::string img_path, int const frame_x, int const frame_y, int const frames, Vector2 origin);
 
       // constructor
-      SpriteHandler();
+      SpriteHandler() = default;
       // deconstructor
       ~SpriteHandler();
       // map that stores all the sprites in format (i.e.) ['img/img.png', Sprite*]

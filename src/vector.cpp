@@ -19,6 +19,12 @@ Vector2D::operator Vector2() const {
    return Vector2{x, y};
 }
 
+Vector2D& Vector2D::operator=(const Vector2& other) {
+   x = other.x;
+   y = other.y;
+   return *this;
+}
+
 Vector2D Vector2D::operator +(Vector2D other) const {
    return Vector2D(x+other.x, y+other.y);
 }
@@ -75,4 +81,22 @@ float Vector2D::angle() const {
 
 float Vector2D::length() const {
    return sqrtf(x*x + y*y);
+}
+
+int Vector2D::signX() const {
+   if(x == 0) return 0;
+   return x/abs(x);
+}
+
+int Vector2D::signY() const {
+   if(y == 0) return 0;
+   return y/abs(y);
+}
+
+void Vector2D::flipX() {
+   x *= -1;
+}
+
+void Vector2D::flipY() {
+   y *= -1;
 }

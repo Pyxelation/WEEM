@@ -13,8 +13,13 @@ class Vector2D {
       Vector2D normalized() const;
       float angle() const;
       float length() const;
+      int signX() const;
+      int signY() const;
+      void flipX();
+      void flipY();
 
       operator Vector2() const;
+      Vector2D& operator= (const Vector2& other);
       Vector2D operator +(Vector2D other) const;
       Vector2D& operator +=(Vector2D other);
       Vector2D operator -(Vector2D other) const;

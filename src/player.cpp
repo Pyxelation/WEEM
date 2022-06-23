@@ -14,30 +14,30 @@ void Player::update() {
    float speed = 3.5f;
 
    // get input
-      Vector2D velocity = Vector2D(
-         (float)(IsKeyDown(KEY_D) - IsKeyDown(KEY_A)),
-         (float)(IsKeyDown(KEY_S) - IsKeyDown(KEY_W))
-      );
+   Vector2D velocity = Vector2D(
+      (float)(IsKeyDown(KEY_D) - IsKeyDown(KEY_A)),
+      (float)(IsKeyDown(KEY_S) - IsKeyDown(KEY_W))
+   );
 
-      if(velocity.x == 0 && velocity.y == 0) {
-         sprite = "sPlayerIdle";
-         frameSpeed = 6;
-      } else {
-         sprite = "sPlayerRun";
-         frameSpeed = 10;
-      }
+   if(velocity.x == 0 && velocity.y == 0) {
+      sprite = "sPlayerIdle";
+      frameSpeed = 5;
+   } else {
+      sprite = "sPlayerRun";
+      frameSpeed = 12;
+   }
 
-      frameCount++;
-      if(frameCount >= (float)GetFPS()/frameSpeed) {
-         frameCount = 0;
-         frameIndex++;
-         if(frameIndex >= SpriteHandler::getSprite(sprite)->frames) frameIndex = 0;
-      }
+   frameCount++;
+   if(frameCount >= (float)GetFPS()/frameSpeed) {
+      frameCount = 0;
+      frameIndex++;
+      if(frameIndex >= SpriteHandler::getSprite(sprite)->frames) frameIndex = 0;
+   }
 
-      position += velocity.normalized() * speed;
-      print("velo x:"+std::to_string(position.x)+" y:"+std::to_string(position.y));
+   position += velocity.normalized() * speed;
+   depth = -position.y;
 
-      if(IsKeyPressed(KEY_ENTER)) scale.x *= -1.0f;
+   if(IsKeyPressed(KEY_ENTER)) scale.flipX();
 
-      if(velocity.x != 0 && velocity.x != scale.x) scale.x = velocity.x;
+   if(velocity.x != 0 && velocity.signX() != scale.signX()) scale.flipX();
 }

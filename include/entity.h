@@ -40,10 +40,14 @@ class Entity {
       float frameSpeed;
 
       // scale to be drawn at
-      Vector2 scale;
+      Vector2D scale;
 
       // sprite of the entity
       std::string sprite;
+
+      // depth dictates in what order the entities are drawn
+      // the higher the depth, the earlier it is drawn
+      int depth; 
    
    protected:
       // the id of the entity
