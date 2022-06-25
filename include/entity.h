@@ -19,6 +19,8 @@ class Entity {
       // this is a function used by the game object when an entity is added
       void setId(int const id);
 
+      int getId() const;
+
       // update the entity data
       // called every frame
       virtual void update();

@@ -1,18 +1,8 @@
 #include "game.h"
 #include "macro.h"
-#include "renderer.h"
 
-Game::Game():windowHeight(450), windowWidth(800), windowTitle("") {
+Game::Game() {
    print("INFO: GAME: created at [" + getPointer(this) + "]");
-   InitWindow(windowWidth, windowHeight, windowTitle.c_str());
-   Renderer::setClearColor(WHITE);
-}
-
-Game::Game(int const windowHeight, int const windowWidth, Color const drawClearColor, std::string const windowTitle):
-windowHeight(windowHeight), windowWidth(windowWidth), windowTitle(windowTitle) {
-   print("INFO: GAME: created at [" + getPointer(this) + "]");
-   InitWindow(windowWidth, windowHeight, windowTitle.c_str());
-   Renderer::setClearColor(drawClearColor);
 }
 
 Game::~Game() {
@@ -23,12 +13,13 @@ Game::~Game() {
    print("INFO: GAME: deleted at [" + getPointer(this) + "]");
 }
 
-void Game::addEntity(Entity* entity) {
+void Game::IaddEntity(Entity* entity) {
    entity->setId(entities.size());
    entities.push_back(entity);
+   entity = nullptr;
 }
 
-void Game::run() {
+void Game::Irun() {
    while(!(WindowShouldClose() && !IsKeyPressed(KEY_ESCAPE))) {
       for(size_t i=0;i<entities.size();i++) {
          entities[i]->update();
@@ -37,4 +28,31 @@ void Game::run() {
       // draw the screen
       Renderer::draw();
    }
+}
+
+void Game::IsetWindowHeight(int height) {
+   SetWindowSize(windowWidth, height);
+   windowHeight = height;
+}
+
+int Game::IgetWindowHeight() const {
+   return windowHeight;
+}
+
+void Game::IsetWindowWidth(int width) {
+   SetWindowSize(width, windowHeight);
+   windowWidth = width;
+}
+
+int Game::IgetWindowWidth() const {
+   return windowWidth;
+}
+
+void Game::IsetWindowTitle(std::string title) {
+   SetWindowTitle(title.c_str());
+   windowTitle = title;
+}
+
+std::string Game::IgetWindowTitle() const {
+   return windowTitle;
 }

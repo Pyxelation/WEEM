@@ -17,6 +17,10 @@ void Entity::setId(int const id) {
    print("INFO: ENTITY: got [ID " + std::to_string(id) + "] at [" + getPointer(this) + "]");
 }
 
+int Entity::getId() const {
+   return id;
+}
+
 void Entity::update() {
    depth = -position.y;
 }
@@ -24,8 +28,8 @@ void Entity::update() {
 void Entity::draw() {
    if(sprite == "") return;
 
-   Sprite* tmp = SpriteHandler::getSprite(sprite);
-   if(tmp == nullptr) return;
+   Sprite* spr = SpriteHandler::getSprite(sprite);
+   if(spr == nullptr) return;
 
-   tmp->draw(position, frameIndex, scale, rotation);
+   spr->draw(position, frameIndex, scale, rotation);
 }
