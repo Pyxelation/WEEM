@@ -6,7 +6,7 @@
 class Player: public Entity {
    public:
       // constructor
-      Player(int const x, int const y, float const frameSpeed, std::string sprite="", float xScale=1.0f, float yScale=1.0f, int rotation=0);
+      Player(int const x, int const y, float const frameSpeed, std::string sprite="", bool visible=true, float xScale=1.0f, float yScale=1.0f, int rotation=0);
       // deconstructor
       ~Player();
 

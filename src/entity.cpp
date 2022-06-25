@@ -1,13 +1,13 @@
 #include "entity.h"
 #include "macro.h"
 
-Entity::Entity(int const x, int const y, float const frameSpeed, std::string sprite, float xScale, float yScale, int rotation):
-position(Vector2D(x, y)), rotation(rotation), frameSpeed(frameSpeed), scale(Vector2D(xScale, yScale)), sprite(sprite), depth(0) {
-   print("INFO: ENTITY: created at [" + getPointer(this) + "]");
+Entity::Entity(int const x, int const y, float const frameSpeed, std::string sprite, bool visible, float xScale, float yScale, float rotation):
+position(Vector2D(x, y)), frameSpeed(frameSpeed), visible(visible), sprite(sprite) {
+   renderObject = new RenderObject{SpriteHandler::getSprite(sprite), 0, position, Vector2D(xScale, yScale), rotation, 0};
+   print("INFO: ENTITY: created with [SPRITE '"+sprite+"'] at [" + getPointer(this) + "]");
 }
 
 Entity::~Entity() {
-   
    print("INFO: ENTITY: [ID " + std::to_string(id) + "] deleted at [" + getPointer(this) + "]");
 }
 
@@ -17,19 +17,19 @@ void Entity::setId(int const id) {
    print("INFO: ENTITY: got [ID " + std::to_string(id) + "] at [" + getPointer(this) + "]");
 }
 
+void Entity::setSprite(std::string sprite) {
+   this->sprite = sprite;
+   renderObject->source = SpriteHandler::getSprite(sprite);
+}
+
 int Entity::getId() const {
    return id;
 }
 
 void Entity::update() {
-   depth = -position.y;
-}
+   renderObject->source = SpriteHandler::getSprite(sprite);
+   renderObject->position = position;
+   renderObject->depth = -position.y;
 
-void Entity::draw() {
-   if(sprite == "") return;
-
-   Sprite* spr = SpriteHandler::getSprite(sprite);
-   if(spr == nullptr) return;
-
-   spr->draw(position, frameIndex, scale, rotation);
+   if(visible) Renderer::addObject(renderObject);
 }

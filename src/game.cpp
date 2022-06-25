@@ -26,7 +26,7 @@ void Game::Irun() {
       }
 
       // draw the screen
-      Renderer::draw();
+      Renderer::render();
    }
 }
 

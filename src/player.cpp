@@ -1,8 +1,8 @@
 #include "player.h"
 #include "macro.h"
 
-Player::Player(int const x, int const y, float const frameSpeed, std::string sprite, float xScale, float yScale, int rotation):
-Entity(x, y, frameSpeed, sprite, xScale, yScale, rotation) {
+Player::Player(int const x, int const y, float const frameSpeed, std::string sprite, bool visible, float xScale, float yScale, int rotation):
+Entity(x, y, frameSpeed, sprite, visible, xScale, yScale, rotation) {
    // empty
 }
 
@@ -19,25 +19,28 @@ void Player::update() {
       (float)(IsKeyDown(KEY_S) - IsKeyDown(KEY_W))
    );
 
-   if(velocity.x == 0 && velocity.y == 0) {
-      sprite = "sPlayerIdle";
+   if(velocity.length() == 0) {
+      setSprite("sPlayerIdle");
       frameSpeed = 5;
    } else {
-      sprite = "sPlayerRun";
+      setSprite("sPlayerRun");
       frameSpeed = 12;
    }
 
    frameCount++;
    if(frameCount >= (float)GetFPS()/frameSpeed) {
       frameCount = 0;
-      frameIndex++;
-      if(frameIndex >= SpriteHandler::getSprite(sprite)->frames) frameIndex = 0;
+      renderObject->frame++;
+      if((renderObject->frame) >= (renderObject->source->frames)) renderObject->frame = 0;
    }
 
    position += velocity.normalized() * speed;
-   depth = -position.y;
+   renderObject->position = position;
+   renderObject->depth = -position.y;
 
-   if(IsKeyPressed(KEY_ENTER)) scale.flipX();
+   if(IsKeyPressed(KEY_ENTER)) renderObject->scale.flipX();
 
-   if(velocity.x != 0 && velocity.signX() != scale.signX()) scale.flipX();
+   if(velocity.x != 0 && velocity.signX() != renderObject->scale.signX()) renderObject->scale.flipX();
+
+   if(visible) Renderer::addObject(renderObject);
 }

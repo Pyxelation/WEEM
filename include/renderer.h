@@ -5,7 +5,19 @@
 
 #include <vector>
 #include <utility>
-#include "entity.h"
+#include "sprite.h"
+#include "vector.h"
+
+struct RenderObject {
+   Sprite* source;
+   int frame;
+   Vector2D position;
+   Vector2D scale;
+   float rotation;
+   int depth;
+
+   ~RenderObject();
+};
 
 class Renderer {
    public:
@@ -17,12 +29,13 @@ class Renderer {
       Renderer(Renderer const&) = delete;
       void operator=(Renderer const&) = delete;
 
-      static void addEntity(Entity* entity) {
-         instance().IaddEntity(entity);
+      static void addObject(RenderObject* rObj) {
+         instance().IaddObject(rObj);
+         rObj = nullptr;
       }
 
-      static void draw() {
-         instance().Idraw();
+      static void render() {
+         instance().Irender();
       }
 
       static void setClearColor(Color drawClearColor) {
@@ -35,10 +48,10 @@ class Renderer {
       // color to draw when the window resets
       Color drawClearColor;
 
-      void IaddEntity(Entity* ent);
-      void Idraw();
+      void IaddObject(RenderObject* rObj);
+      void Irender();
 
-      std::vector<std::pair<int, Entity*>> entityQueue;
+      std::vector<RenderObject*> queue;
 
 };
 

@@ -54,7 +54,7 @@ SpriteHandler::~SpriteHandler() {
 }
 
 Sprite* SpriteHandler::IgetSprite(std::string subPath) const {
-   return instance().sprites.at(subPath);
+   return instance().sprites[subPath];
 }
 
 bool SpriteHandler::IspriteExists(std::string subPath) const {
@@ -62,15 +62,18 @@ bool SpriteHandler::IspriteExists(std::string subPath) const {
 }
 
 void SpriteHandler::IaddSprite(std::string img_path, int const frame_x, int const frame_y, int const frames, Vector2 origin) {
-   Sprite* sprite = new Sprite(img_path, frame_x, frame_y, frames, origin);
+   std::string sub_path = img_path;
    size_t pos = 0;
-   while ((pos = img_path.find("/")) != std::string::npos) {
-      std::string tmp = img_path.substr(0, pos);
-      img_path.erase(0, pos + 1);
+   while ((pos = sub_path.find("/")) != std::string::npos) {
+      std::string tmp = sub_path.substr(0, pos);
+      sub_path.erase(0, pos + 1);
    }
-   
-   std::string key = img_path.substr(0, img_path.length()-4);
+   std::string key = sub_path.substr(0, sub_path.length()-4);
+
+   if(instance().sprites.count(key) > 0) return;
+
+   Sprite* sprite = new Sprite(img_path, frame_x, frame_y, frames, origin);
    instance().sprites.emplace(key, sprite);
    sprite = nullptr;
-   print("INFO: SPRITE: HANDLER: Added sprite [" + img_path + "] to the map");
+   print("INFO: SPRITE: HANDLER: Added sprite [" + sub_path + "] to the map");
 }

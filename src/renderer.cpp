@@ -1,33 +1,70 @@
 #include "renderer.h"
+#include "macro.h"
 
-void Renderer::IaddEntity(Entity* entity) {
-   auto value = std::pair<int, Entity*>(entity->depth, entity);
-   auto index = entityQueue.begin();
-   for(size_t i=0;i<entityQueue.size();i++) {
-      if(entityQueue[i].first > entity->depth) {
-         index = entityQueue.begin()+i;
+void Renderer::IaddObject(RenderObject* rObj) {
+   auto index = queue.begin();
+   for(size_t i=0;i<queue.size();i++) {
+      if(queue[i]->depth > rObj->depth) {
+         index = queue.begin()+i+1;
          break;
       }
    }
 
-   entityQueue.insert(index, value);
+   queue.insert(index, rObj);
+   rObj = nullptr;
 }
 
-void Renderer::Idraw() {
+void Renderer::Irender() {
    BeginDrawing();
       ClearBackground(drawClearColor);
 
-      // draw all entities
-      for(auto ent : entityQueue) {
-         Entity* e = ent.second;
-         e->draw();
+      for(size_t i=0;i<queue.size();i++) {
+         RenderObject* rObj = queue[i];
+         // check if there is a texture loaded
+         if(rObj->source->frameHeight == 0 || rObj->source->frameWidth == 0) continue;
+
+
+         // get the indexes of the frame
+         int xIndex = (rObj->frame)%((rObj->source->texture.width)/(rObj->source->frameWidth));
+         int yIndex = (rObj->frame)/((rObj->source->texture.width)/(rObj->source->frameWidth));
+
+         // convert the indexes into coordinates within the texture
+         float recX = xIndex*(rObj->source->frameWidth);
+         float recY = yIndex*(rObj->source->frameHeight);
+         // get the with of the frame and if it needs to be flipped
+         float recWidth = (rObj->source->frameWidth)*rObj->scale.signX();
+         float recHeight = (rObj->source->frameHeight)*rObj->scale.signY();
+         Rectangle sourceRec = { recX, recY, recWidth, recHeight };
+
+         // scale the sprite
+         float drawWidth = (rObj->source->frameWidth)*abs(rObj->scale.x);
+         float drawHeight = (rObj->source->frameHeight)*abs(rObj->scale.y);
+         Rectangle destRec = { rObj->position.x, rObj->position.y, drawWidth, drawHeight };
+
+         // scale the origin of the sprite
+         float xAnchor = ((rObj->source->frameWidth)*(rObj->source->origin.x))*abs(rObj->scale.x);
+         float yAnchor = ((rObj->source->frameHeight)*(rObj->source->origin.y))*abs(rObj->scale.y);
+         Vector2 Origin = { xAnchor, yAnchor };
+
+         // draw the sprite
+         DrawTexturePro(rObj->source->texture, sourceRec, destRec, Origin, rObj->rotation, WHITE);
+
+         // make the queue safe to be cleared
+         rObj = nullptr;
+         queue[i] = nullptr;
+
       }
 
-   #ifdef DEBUG
-
-      DrawText(("FPS: " + std::to_string(GetFPS())).c_str(), 25, 25, 25, GOLD);
-
-   #endif
-
    EndDrawing();
+
+   // clear the queue
+   queue.clear();
+}
+
+/* ########################################################################################################## //
+################################################################################################################
+// ########################################################################################################## */
+
+RenderObject::~RenderObject() {
+   source = nullptr;
 }

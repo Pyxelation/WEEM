@@ -5,13 +5,12 @@
 #include <string>
 #include "sprite.h"
 #include "vector.h"
+#include "renderer.h"
 
 class Entity {
    public:
-      // default constructor
-      Entity();
       // constructor
-      Entity(int const x, int const y, float const frameSpeed, std::string sprite="", float xScale=1.0f, float yScale=1.0f, int rotation=0);
+      Entity(int const x, int const y, float const frameSpeed, std::string sprite="", bool visible=true, float xScale=1.0f, float yScale=1.0f, float rotation=0.0f);
       virtual ~Entity();
 
       // set the id of the entity
@@ -20,38 +19,30 @@ class Entity {
       void setId(int const id);
 
       int getId() const;
+      
+      void setSprite(std::string sprite);
 
       // update the entity data
       // called every frame
       virtual void update();
 
-      // draw the entity
-      // called every frame
-      virtual void draw();
+
+      // an object containing all render specific variables
+      RenderObject* renderObject;
 
       // a vector containing the x and y position of the entity
       Vector2D position;
 
-      // image rotation in degrees
-      float rotation;
-      
-      // current frame of the sprite
-      int frameIndex = 0;
 
       // how fast is the sprite
       float frameSpeed;
 
-      // scale to be drawn at
-      Vector2D scale;
-
-      // sprite of the entity
-      std::string sprite;
-
-      // depth dictates in what order the entities are drawn
-      // the higher the depth, the earlier it is drawn
-      int depth; 
+      // if the entity should be rendered
+      bool visible;
    
    protected:
+      // sprite of the entity
+      std::string sprite;
       // the id of the entity
       int id;
       // frame counter
