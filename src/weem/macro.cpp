@@ -1,4 +1,4 @@
-#include "macro.h"
+#include "weem/macro.h"
 #include <sstream>
 
 // a simple print function with coloring for different types of messages:

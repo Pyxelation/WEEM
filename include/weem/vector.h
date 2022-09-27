@@ -1,7 +1,7 @@
 #ifndef WEEM_vector_h
 #define WEEM_vector_h
 
-#include "raylib/raylib.h"
+#include "../raylib/raylib.h"
 
 class Vector2D {
    public:

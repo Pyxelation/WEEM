@@ -1,12 +1,12 @@
 #ifndef WEEM_game_h
 #define WEEM_game_h
 
-#include "raylib/raylib.h"
+#include "../raylib/raylib.h"
 #include <string>
 #include <vector>
-#include "entity.h"
-#include "macro.h"
-#include "renderer.h"
+#include "weem/entity.h"
+#include "weem/macro.h"
+#include "weem/renderer.h"
 
 class Game {
    public:

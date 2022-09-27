@@ -1,5 +1,5 @@
-#include "vector.h"
-#include "macro.h"
+#include "weem/vector.h"
+#include "weem/macro.h"
 #include <cmath>
 #include <string>
 

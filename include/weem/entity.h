@@ -1,11 +1,11 @@
 #ifndef WEEM_entity_h
 #define WEEM_entity_h
 
-#include "raylib/raylib.h"
+#include "../raylib/raylib.h"
 #include <string>
-#include "sprite.h"
-#include "vector.h"
-#include "renderer.h"
+#include "weem/sprite.h"
+#include "weem/vector.h"
+#include "weem/renderer.h"
 
 class Entity {
    public:

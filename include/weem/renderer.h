@@ -1,12 +1,16 @@
 #ifndef WEEM_renderer_h
 #define WEEM_renderer_h
 
+// enable debug features
 #define DEBUG
+
+// draw the bounding boxes
+//#define BBOX
 
 #include <vector>
 #include <utility>
-#include "sprite.h"
-#include "vector.h"
+#include "weem/sprite.h"
+#include "weem/vector.h"
 
 struct RenderObject {
    Sprite* source;

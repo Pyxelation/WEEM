@@ -1,5 +1,6 @@
-#include "sprite.h"
-#include "macro.h"
+#include "weem/sprite.h"
+#include "weem/macro.h"
+#include "weem/vector.h"
 
 Sprite::Sprite(std::string img_path, int const frame_x, int const frame_y, int const frames, Vector2 origin): 
 frames(frames), origin(origin) {
@@ -19,24 +20,6 @@ frames(frames), origin(origin) {
 
 Sprite::~Sprite() {
    print("INFO: SPRITE: deleted at [" + getPointer(this) + "]");
-}
-
-void Sprite::draw(Vector2 position, int index, Vector2 scale, float rotation) {
-   if(frameHeight == 0 || frameWidth == 0) return;
-
-   int xIndex = index%(texture.width/frameWidth);
-   int yIndex = index/(texture.width/frameWidth);
-
-   float recX = (float)(xIndex*frameWidth);
-   float recY = (float)(yIndex*frameHeight);
-   Rectangle sourceRec = { recX, recY, (float)frameWidth*(scale.x/abs(scale.x)), (float)frameHeight*(scale.y/abs(scale.y)) };
-
-   Rectangle destRec = { position.x, position.y, frameWidth*abs(scale.x), frameHeight*abs(scale.y) };
-
-   Vector2 Origin = { ((float)frameWidth*origin.x)*abs(scale.x), ((float)frameHeight*origin.y)*abs(scale.y) };
-
-   DrawTexturePro(texture, sourceRec, destRec, Origin, rotation, WHITE);
-
 }
 
 /* ########################################################################################################## //

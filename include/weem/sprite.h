@@ -1,7 +1,7 @@
 #ifndef WEEM_sprite_h
 #define WEEM_sprite_h
 
-#include "raylib/raylib.h"
+#include "../raylib/raylib.h"
 #include <string>
 #include <map>
 
@@ -17,11 +17,6 @@ struct Sprite {
 
    // amount of frames
    int frames;
-
-   // draw and update the sprite
-   // called every frame
-   void draw(Vector2 position={0.0f, 0.0f}, int index=0, Vector2 scale={1.0f,1.0f}, float rotation=0.0f);
-
 
    // the texture of the sprite
    Texture2D texture;
@@ -57,6 +52,10 @@ class SpriteHandler {
          return instance().IgetSprite(subPath);
       }
 
+      // adds a sprite to the game
+      // the origin is used to set the position-relation of the sprite and the object
+      // origin.x: 0.0 means left, 1.0 means right
+      // origin.y: 0.0 means top, 1.0 means bottom
       static void addSprite(std::string img_path, int const frame_x, int const frame_y, int const frames, Vector2 origin={0.0f, 0.0f}) {
          instance().IaddSprite(img_path, frame_x, frame_y, frames, origin);
       }

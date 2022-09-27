@@ -1,5 +1,5 @@
-#include "game.h"
-#include "macro.h"
+#include "weem/game.h"
+#include "weem/macro.h"
 
 Game::Game() {
    print("INFO: GAME: created at [" + getPointer(this) + "]");
@@ -28,6 +28,10 @@ void Game::Irun() {
       // draw the screen
       Renderer::render();
    }
+   print(
+      ("INFO: shutdown command given\nINFO:     > Time elapsed since startup: "+
+      std::to_string(GetTime())).c_str()
+   );
 }
 
 void Game::IsetWindowHeight(int height) {

@@ -1,7 +1,7 @@
 #ifndef WEEM_player_h
 #define WEEM_player_h
 
-#include "entity.h"
+#include "weem/entity.h"
 
 class Player: public Entity {
    public:

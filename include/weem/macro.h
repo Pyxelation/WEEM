@@ -4,9 +4,10 @@
 // Includes
 #include <iostream>
 #include <string>
+#include <filesystem>
 
 // defines
-#define ROOT (std::string)"/Users/justinslingerland/Desktop/Projects/WEEM/"
+#define ROOT (std::string) std::filesystem::current_path()
 
 enum level {
    INFO,

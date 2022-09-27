@@ -1,5 +1,5 @@
-#include "entity.h"
-#include "macro.h"
+#include "weem/entity.h"
+#include "weem/macro.h"
 
 Entity::Entity(int const x, int const y, float const frameSpeed, std::string sprite, bool visible, float xScale, float yScale, float rotation):
 position(Vector2D(x, y)), frameSpeed(frameSpeed), visible(visible), sprite(sprite) {

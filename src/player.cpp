@@ -1,5 +1,5 @@
 #include "player.h"
-#include "macro.h"
+#include "weem/macro.h"
 
 Player::Player(int const x, int const y, float const frameSpeed, std::string sprite, bool visible, float xScale, float yScale, int rotation):
 Entity(x, y, frameSpeed, sprite, visible, xScale, yScale, rotation) {
@@ -11,7 +11,7 @@ Player::~Player() {
 }
 
 void Player::update() {
-   float speed = 3.5f;
+   float speed = 210;
 
    // get input
    Vector2D velocity = Vector2D(
@@ -34,7 +34,7 @@ void Player::update() {
       if((renderObject->frame) >= (renderObject->source->frames)) renderObject->frame = 0;
    }
 
-   position += velocity.normalized() * speed;
+   position += velocity.normalized() * speed * GetFrameTime();
    renderObject->position = position;
    renderObject->depth = -position.y;
 

@@ -1,5 +1,5 @@
-#include "renderer.h"
-#include "macro.h"
+#include "weem/renderer.h"
+#include "weem/macro.h"
 
 void Renderer::IaddObject(RenderObject* rObj) {
    auto index = queue.begin();
@@ -48,12 +48,21 @@ void Renderer::Irender() {
 
          // draw the sprite
          DrawTexturePro(rObj->source->texture, sourceRec, destRec, Origin, rObj->rotation, WHITE);
+      #ifdef BBOX
+         DrawRectangleLines(rObj->position.x-Origin.x, rObj->position.y-Origin.y, destRec.width, destRec.height, RED);
+         DrawRectangle(rObj->position.x-2, rObj->position.y-4, 4, 4, RED);
+
+      #endif
 
          // make the queue safe to be cleared
          rObj = nullptr;
          queue[i] = nullptr;
 
       }
+
+   #ifdef DEBUG
+      DrawText(("FPS: " + std::to_string(GetFPS())).c_str(), 25, 25, 25, GOLD);
+   #endif
 
    EndDrawing();
 
