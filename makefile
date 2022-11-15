@@ -28,8 +28,6 @@ DIRS = $(sort $(OUT_DIR) $(subst ., ,$(dir $(addprefix $(BIN_DIR)/, $(OBJS))))) 
 
 TARGET = WEEM
 
-reverse = $(shell printf "%s\n" $(strip $1) | tac) #function to reverse list
-
 .PHONY: all clean $(TARGET)
 
 # create the executable
@@ -37,9 +35,8 @@ all: $(DIRS) $(TARGET) # firstly creates the folders and then the output
 
 # clear the object files
 clean: 
-	rm -f $(addprefix $(BIN_DIR)/, $(OBJS))
-	rm -f $(OUT_DIR)/output.exe
-	rmdir $(call reverse,$(DIRS))
+	rm -r $(OUT_DIR)
+	rm -r $(BIN_DIR)
 
 # create the required folders
 $(DIRS):
