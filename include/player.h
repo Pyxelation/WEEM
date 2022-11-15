@@ -1,5 +1,5 @@
-#ifndef WEEM_player_h
-#define WEEM_player_h
+#ifndef player_h
+#define player_h
 
 #include "weem/entity.h"
 

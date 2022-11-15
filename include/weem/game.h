@@ -1,9 +1,11 @@
 #ifndef WEEM_game_h
 #define WEEM_game_h
 
-#include "../raylib/raylib.h"
 #include <string>
 #include <vector>
+
+#include "raylib/raylib.h"
+
 #include "weem/entity.h"
 #include "weem/macro.h"
 #include "weem/renderer.h"

@@ -1,8 +1,10 @@
 #ifndef WEEM_entity_h
 #define WEEM_entity_h
 
-#include "../raylib/raylib.h"
 #include <string>
+
+#include "raylib/raylib.h"
+
 #include "weem/sprite.h"
 #include "weem/vector.h"
 #include "weem/renderer.h"

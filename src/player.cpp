@@ -1,5 +1,6 @@
-#include "player.h"
 #include "weem/macro.h"
+
+#include "player.h"
 
 Player::Player(int const x, int const y, float const frameSpeed, std::string sprite, bool visible, float xScale, float yScale, int rotation):
 Entity(x, y, frameSpeed, sprite, visible, xScale, yScale, rotation) {

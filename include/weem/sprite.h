@@ -1,9 +1,10 @@
 #ifndef WEEM_sprite_h
 #define WEEM_sprite_h
 
-#include "../raylib/raylib.h"
 #include <string>
 #include <map>
+
+#include "raylib/raylib.h"
 
 struct Sprite {
    // constructor:

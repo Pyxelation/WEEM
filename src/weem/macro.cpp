@@ -1,5 +1,6 @@
-#include "weem/macro.h"
 #include <sstream>
+
+#include "weem/macro.h"
 
 // a simple print function with coloring for different types of messages:
 // INFO: for white text

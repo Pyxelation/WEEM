@@ -1,7 +1,9 @@
-#include "weem/vector.h"
-#include "weem/macro.h"
 #include <cmath>
 #include <string>
+
+#include "weem/vector.h"
+#include "weem/macro.h"
+
 
 Vector2D::Vector2D(): x(0), y(0) {
    // empty
