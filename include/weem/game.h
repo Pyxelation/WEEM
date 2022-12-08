@@ -54,6 +54,14 @@ class Game {
          instance().IaddEntity(entity);
       }
 
+      static void removeEntity(int id) {
+         instance().IremoveEntity(id);
+      }
+
+      static Entity* getEntity(int id) {
+         return instance().IgetEntity(id);
+      }
+
       static void run() {
          instance().Irun();
       }
@@ -80,6 +88,11 @@ class Game {
 
       // add an entity
       void IaddEntity(Entity* entity);
+      // remove an entity
+      void IremoveEntity(int id);
+      // get pointer to an entity
+      Entity* IgetEntity(int id) const;
+
 
       // run the game
       void Irun();

@@ -19,6 +19,22 @@ void Game::IaddEntity(Entity* entity) {
    entity = nullptr;
 }
 
+void Game::IremoveEntity(int id) {
+   if(id < 0) {
+      print(("WARNING: GAME: id " + std::to_string(id) + " of instance to be deleted is invalid!..").c_str(), level::WARNING);
+      return;
+   }
+
+   Entity* target = entities[id];
+   entities[id] = nullptr;
+   delete target;
+   target = nullptr;
+}
+
+Entity* Game::IgetEntity(int id) const {
+   return entities[id];
+}
+
 void Game::Irun() {
    while(!(WindowShouldClose() && !IsKeyPressed(KEY_ESCAPE))) {
       for(size_t i=0;i<entities.size();i++) {

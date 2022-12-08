@@ -15,6 +15,8 @@ enum level {
    ERROR
 };
 
+const int noone = -1;
+
 void print(std::string input, level level=level::INFO);
 
 std::string getPointer(void* ptr);
