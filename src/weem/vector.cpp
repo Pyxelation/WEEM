@@ -9,6 +9,10 @@ Vector2D::Vector2D(): x(0), y(0) {
    // empty
 }
 
+Vector2D::Vector2D(Vector2 origin): x(origin.x), y(origin.y) {
+   // empty
+}
+
 Vector2D::Vector2D(float const x, float const y): x(x), y(y) {
    // empty
 }

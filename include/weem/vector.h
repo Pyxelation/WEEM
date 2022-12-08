@@ -6,6 +6,7 @@
 class Vector2D {
    public:
       Vector2D();
+      Vector2D(Vector2 origin);
       Vector2D(float const x, float const y);
       Vector2D(int const x, int const y);
 
