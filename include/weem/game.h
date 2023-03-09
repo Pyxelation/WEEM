@@ -13,8 +13,8 @@ class Game {
    public:
       static void init(int const windowHeight, int const windowWidth, Color const drawClearColor, std::string windowTitle) {
          print("INFO: GAME: initializing the game");
-         InitWindow(windowWidth, windowHeight, windowTitle.c_str());
          Renderer::init(windowHeight, windowWidth, drawClearColor);
+         InitWindow(windowWidth, windowHeight, windowTitle.c_str());
 
          instance().windowTitle = windowTitle;
       }
@@ -31,8 +31,8 @@ class Game {
          return instance().IgetWindowTitle();
       }
 
-      static void addEntity(Entity* entity) {
-         instance().IaddEntity(entity);
+      static int addEntity(Entity* entity) {
+         return instance().IaddEntity(entity);
       }
 
       static void removeEntity(int id) {
@@ -60,7 +60,7 @@ class Game {
       std::string IgetWindowTitle() const;
 
       // add an entity
-      void IaddEntity(Entity* entity);
+      int IaddEntity(Entity* entity);
       // remove an entity
       void IremoveEntity(int id);
       // get pointer to an entity

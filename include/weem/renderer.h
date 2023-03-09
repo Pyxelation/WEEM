@@ -29,13 +29,11 @@ struct RenderObject {
 class Renderer {
    public:
       static void init(int const windowHeight, int const windowWidth, Color const drawClearColor) {
+         print("INFO: RENDERER: initializing the renderer", level::INFO);
          instance().windowWidth = windowWidth;
          instance().windowHeight = windowHeight;
 
-         instance().Iview.offset = {(float)(windowWidth/2), (float)(windowHeight/2)};
-         instance().Iview.rotation = 0.0f;
-         instance().Iview.target = {0.0f, 0.0f};
-         instance().Iview.zoom = 1.0f;
+         instance().currentView = addView(new View({0.0f, 0.0f}));
 
          instance().drawClearColor = drawClearColor;
       }
@@ -61,8 +59,8 @@ class Renderer {
          instance().drawClearColor = drawClearColor;
       }
 
-      static void addView(View* view) {
-         instance().IaddView(view);
+      static int addView(View* view) {
+         return instance().IaddView(view);
       }
 
       static void removeView(int id) {
@@ -103,7 +101,7 @@ class Renderer {
       void IaddObject(RenderObject* rObj);
       void Irender();
 
-      void IaddView(View* view);
+      int IaddView(View* view);
       void IremoveView(int id);
       View* IgetView(int id) const;
 

@@ -13,17 +13,23 @@ Game::~Game() {
    print("INFO: GAME: deleted at [" + getPointer(this) + "]");
 }
 
-void Game::IaddEntity(Entity* entity) {
+int Game::IaddEntity(Entity* entity) {
    entity->setId(entities.size());
+   int index;
    if(indexStack.size() > 0) {
-      int index = indexStack.back();
+      index = indexStack.back();
       entities[index] = entity;
 
       indexStack.pop_back();
    } else {
+      index = entities.size();
       entities.push_back(entity);
    }
+
+   print("INFO: GAME: entity at [" + getPointer(entity) + "] added with id " + std::to_string(index).c_str(), level::INFO);
+
    entity = nullptr;
+   return index;
 }
 
 void Game::IremoveEntity(int id) {

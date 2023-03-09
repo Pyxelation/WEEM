@@ -10,7 +10,7 @@ class View {
    public:
       View(); // default constructor
       View(Vector2 position, float zoom=1.0f, float rotation=0.0f, Vector2 offset={0.0f, 0.0f}, float smoothness=1.0f, int target=noone); // constructor
-      ~View() = default; // destructor
+      ~View(); // destructor
 
       // set the id of the entity
       // NOTE: Do not call this function unless necessary

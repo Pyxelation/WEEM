@@ -48,6 +48,7 @@ int Renderer::IgetWindowWidth() const {
 void Renderer::Irender() {
    // set the view
    if(currentView != noone) {
+      views[currentView]->updatePosition();
       views[currentView]->updateView(&Iview);
    }
 
@@ -110,17 +111,23 @@ void Renderer::Irender() {
    queue.clear();
 }
 
-void Renderer::IaddView(View* view) {
-   view->setId(views.size());
+int Renderer::IaddView(View* view) {
+   int index;
    if(indexStack.size() > 0) {
-      int index = indexStack.back();
+      index = indexStack.back();
+      view->setId(index);
       views[index] = view;
 
       indexStack.pop_back();
    } else {
+      index = views.size();
+      view->setId(index);
       views.push_back(view);
    }
+
+   print(("INFO: RENDERER: view at [" + getPointer(view) + "] has been added with id " + std::to_string(index)).c_str(), level::INFO);
    view = nullptr;
+   return index;
 }
 
 void Renderer::IremoveView(int id) {
@@ -144,7 +151,7 @@ void Renderer::IremoveView(int id) {
 
 View* Renderer::IgetView(int id) const {
    if(id < 0 || (size_t)id >= views.size()) {
-      print("WARNING: RENDERER: view with index " + std::to_string(id) + " does not exist", level::WARNING);
+      print("ERROR: RENDERER: view with index " + std::to_string(id) + " does not exist", level::ERROR);
       return nullptr;
    }
    return views[id];
