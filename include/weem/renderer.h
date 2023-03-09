@@ -10,8 +10,10 @@
 #include <vector>
 #include <utility>
 
+#include "raylib/raylib.h"
 #include "weem/sprite.h"
 #include "weem/vector.h"
+#include "weem/view.h"
 
 struct RenderObject {
    Sprite* source;
@@ -26,6 +28,18 @@ struct RenderObject {
 
 class Renderer {
    public:
+      static void init(int const windowHeight, int const windowWidth, Color const drawClearColor) {
+         instance().windowWidth = windowWidth;
+         instance().windowHeight = windowHeight;
+
+         instance().Iview.offset = {(float)(windowWidth/2), (float)(windowHeight/2)};
+         instance().Iview.rotation = 0.0f;
+         instance().Iview.target = {0.0f, 0.0f};
+         instance().Iview.zoom = 1.0f;
+
+         instance().drawClearColor = drawClearColor;
+      }
+
       static Renderer& instance() {
          static Renderer INSTANCE;
          return INSTANCE;
@@ -46,17 +60,68 @@ class Renderer {
       static void setClearColor(Color drawClearColor) {
          instance().drawClearColor = drawClearColor;
       }
+
+      static void addView(View* view) {
+         instance().IaddView(view);
+      }
+
+      static void removeView(int id) {
+         instance().IremoveView(id);
+      }
+
+      static View* getView(int id) {
+         return instance().IgetView(id);
+      }
+
+      static void setView(View* view) {
+         instance().IaddView(view);
+         instance().currentView = instance().views.size()-1;
+      }
+
+      static void setWindowHeight(int const height) {
+         instance().IsetWindowHeight(height);
+      }
+
+      static int getWindowHeight() {
+         return instance().IgetWindowHeight();
+      }
+
+      static void setWindowWidth(int const width) {
+         instance().IsetWindowWidth(width);
+      }
+
+      static int getWindowWidth() {
+         return instance().IgetWindowWidth();
+      }
    
    private:
-      Renderer() = default;
-      ~Renderer() = default;
+      Renderer();
+      ~Renderer();
       // color to draw when the window resets
       Color drawClearColor;
 
       void IaddObject(RenderObject* rObj);
       void Irender();
 
+      void IaddView(View* view);
+      void IremoveView(int id);
+      View* IgetView(int id) const;
+
+      void IsetWindowHeight(int const height);
+      int IgetWindowHeight() const;
+      void IsetWindowWidth(int const width);
+      int IgetWindowWidth() const;
+
       std::vector<RenderObject*> queue;
+      std::vector<View*> views;
+      std::vector<int> indexStack;
+      int currentView;
+      Camera2D Iview;
+
+      // the height of the game window
+      int windowHeight;
+      // the width of the game window
+      int windowWidth;
 
 };
 

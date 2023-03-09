@@ -5,3 +5,5 @@
 #include "weem/game.h"
 #include "weem/sprite.h"
 #include "weem/entity.h"
+#include "weem/view.h"
+#include "weem/renderer.h"

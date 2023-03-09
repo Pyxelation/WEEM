@@ -1,6 +1,19 @@
 #include "weem/renderer.h"
 #include "weem/macro.h"
 
+Renderer::Renderer(): currentView(noone) {
+   // empty
+}
+
+Renderer::~Renderer() {
+   for(auto view : views) {
+      delete view;
+   }
+   for(auto robj : queue) {
+      delete robj;
+   }
+}
+
 void Renderer::IaddObject(RenderObject* rObj) {
    auto index = queue.begin();
    for(size_t i=0;i<queue.size();i++) {
@@ -14,9 +27,35 @@ void Renderer::IaddObject(RenderObject* rObj) {
    rObj = nullptr;
 }
 
+void Renderer::IsetWindowHeight(int const height) {
+   SetWindowSize(windowWidth, height);
+   windowHeight = height;
+}
+
+int Renderer::IgetWindowHeight() const {
+   return windowHeight;
+}
+
+void Renderer::IsetWindowWidth(int const width) {
+   SetWindowSize(width, windowHeight);
+   windowWidth = width;
+}
+
+int Renderer::IgetWindowWidth() const {
+   return windowWidth;
+}
+
 void Renderer::Irender() {
+   // set the view
+   if(currentView != noone) {
+      views[currentView]->updateView(&Iview);
+   }
+
+   // draw the screen
    BeginDrawing();
       ClearBackground(drawClearColor);
+
+      BeginMode2D(Iview);
 
       for(size_t i=0;i<queue.size();i++) {
          RenderObject* rObj = queue[i];
@@ -64,10 +103,51 @@ void Renderer::Irender() {
       DrawText(("FPS: " + std::to_string(GetFPS())).c_str(), 25, 25, 25, GOLD);
    #endif
 
+   EndMode2D();
    EndDrawing();
 
    // clear the queue
    queue.clear();
+}
+
+void Renderer::IaddView(View* view) {
+   view->setId(views.size());
+   if(indexStack.size() > 0) {
+      int index = indexStack.back();
+      views[index] = view;
+
+      indexStack.pop_back();
+   } else {
+      views.push_back(view);
+   }
+   view = nullptr;
+}
+
+void Renderer::IremoveView(int id) {
+   if(id < 0) {
+      print(("WARNING: RENDERER: id " + std::to_string(id) + " of view to be deleted is invalid!..").c_str(), level::WARNING);
+      return;
+   }
+
+   View* view = views[id];
+   views[id] = nullptr;
+   delete view;
+   view = nullptr;
+
+   if(views.size() == 0) {
+      indexStack.clear();
+      return;
+   }
+
+   indexStack.push_back(id);
+}
+
+View* Renderer::IgetView(int id) const {
+   if(id < 0 || (size_t)id >= views.size()) {
+      print("WARNING: RENDERER: view with index " + std::to_string(id) + " does not exist", level::WARNING);
+      return nullptr;
+   }
+   return views[id];
 }
 
 /* ########################################################################################################## //

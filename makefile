@@ -9,7 +9,7 @@ SRC_DIR = src
 INC_DIR = include
 LIB_DIR = lib
 BIN_DIR = bin
-OUT_DIR = $(BIN_DIR)/out
+OUT_DIR = bin/out
 
 # C++ version
 CPP_VER = 20
@@ -21,10 +21,12 @@ WARNINGS = -Wall -Wextra -g -Og
 # (warnings) (c++ version) (include directory)
 CXXFLAGS = $(WARNINGS) $(addprefix -std=c++, $(CPP_VER)) $(addprefix -I, $(INC_DIR))
 
-# find all folders and .cpp files to convert them to .o requirements
-SOURCES = $(sort $(shell find $(SRC_DIR) -name '*.cpp')) # finds all .cpp files
-OBJS = $(patsubst $(SRC_DIR)/%,%,$(SOURCES:.cpp=.o)) # removes the source folder name out of the .cpp and turns it into .o
+# find all .cpp files and convert them to obj requirments
+SOURCES = $(sort $(shell find $(SRC_DIR) -name '*.cpp'))
+OBJS = $(patsubst $(SRC_DIR)/%,%,$(SOURCES:.cpp=.o))
 DIRS = $(sort $(OUT_DIR) $(subst ., ,$(dir $(addprefix $(BIN_DIR)/, $(OBJS))))) # takes the folder names out of the object files and adds the output folder
+
+reverse = $(shell printf "%s\n" $(strip $1) | tac) #function to reverse list
 
 TARGET = WEEM
 
@@ -34,9 +36,8 @@ TARGET = WEEM
 all: $(DIRS) $(TARGET) # firstly creates the folders and then the output
 
 # clear the object files
-clean: 
-	rm -r $(OUT_DIR)
-	rm -r $(BIN_DIR)
+clean:
+	rm -r $(call reverse,$(DIRS))
 
 # create the required folders
 $(DIRS):

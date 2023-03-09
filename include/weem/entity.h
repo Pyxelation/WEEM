@@ -35,7 +35,6 @@ class Entity {
       // a vector containing the x and y position of the entity
       Vector2D position;
 
-
       // how fast is the sprite
       float frameSpeed;
 
