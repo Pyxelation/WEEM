@@ -17,8 +17,10 @@ Renderer::~Renderer() {
 void Renderer::IaddObject(RenderObject* rObj) {
    auto index = queue.begin();
    for(size_t i=0;i<queue.size();i++) {
-      if(queue[i]->depth > rObj->depth) {
+      if(rObj->depth <= queue[i]->depth) {
          index = queue.begin()+i+1;
+         continue;
+      } else {
          break;
       }
    }
@@ -56,43 +58,53 @@ void Renderer::Irender() {
    BeginDrawing();
       ClearBackground(drawClearColor);
 
-      BeginMode2D(Iview);
-
+      bool last_fixed = true;
       for(size_t i=0;i<queue.size();i++) {
          RenderObject* rObj = queue[i];
-         // check if there is a texture loaded
-         if(rObj->source->frameHeight == 0 || rObj->source->frameWidth == 0) continue;
 
+         if(last_fixed && !rObj->fixed) {
+            BeginMode2D(Iview); // draw in worldspace
+         } else if (!last_fixed && rObj->fixed) {
+            EndMode2D();
+         }
 
-         // get the indexes of the frame
-         int xIndex = (rObj->frame)%((rObj->source->texture.width)/(rObj->source->frameWidth));
-         int yIndex = (rObj->frame)/((rObj->source->texture.width)/(rObj->source->frameWidth));
+         if(!(rObj->text.empty())) { // render text
+            DrawText((rObj->text).c_str(), rObj->position.x, rObj->position.y, rObj->fontSize, rObj->drawColor);
+         } else { // render a sprite
+            // check if there is a texture loaded
+            if(rObj->source->frameHeight == 0 || rObj->source->frameWidth == 0) continue;
 
-         // convert the indexes into coordinates within the texture
-         float recX = xIndex*(rObj->source->frameWidth);
-         float recY = yIndex*(rObj->source->frameHeight);
-         // get the with of the frame and if it needs to be flipped
-         float recWidth = (rObj->source->frameWidth)*rObj->scale.signX();
-         float recHeight = (rObj->source->frameHeight)*rObj->scale.signY();
-         Rectangle sourceRec = { recX, recY, recWidth, recHeight };
+            // get the indexes of the frame
+            int xIndex = (rObj->frame)%((rObj->source->texture.width)/(rObj->source->frameWidth));
+            int yIndex = (rObj->frame)/((rObj->source->texture.width)/(rObj->source->frameWidth));
 
-         // scale the sprite
-         float drawWidth = (rObj->source->frameWidth)*abs(rObj->scale.x);
-         float drawHeight = (rObj->source->frameHeight)*abs(rObj->scale.y);
-         Rectangle destRec = { rObj->position.x, rObj->position.y, drawWidth, drawHeight };
+            // convert the indexes into coordinates within the texture
+            float recX = xIndex*(rObj->source->frameWidth);
+            float recY = yIndex*(rObj->source->frameHeight);
+            // get the with of the frame and if it needs to be flipped
+            float recWidth = (rObj->source->frameWidth)*rObj->scale.signX();
+            float recHeight = (rObj->source->frameHeight)*rObj->scale.signY();
+            Rectangle sourceRec = { recX, recY, recWidth, recHeight };
 
-         // scale the origin of the sprite
-         float xAnchor = ((rObj->source->frameWidth)*(rObj->source->origin.x))*abs(rObj->scale.x);
-         float yAnchor = ((rObj->source->frameHeight)*(rObj->source->origin.y))*abs(rObj->scale.y);
-         Vector2 Origin = { xAnchor, yAnchor };
+            // scale the sprite
+            float drawWidth = (rObj->source->frameWidth)*abs(rObj->scale.x);
+            float drawHeight = (rObj->source->frameHeight)*abs(rObj->scale.y);
+            Rectangle destRec = { rObj->position.x, rObj->position.y, drawWidth, drawHeight };
 
-         // draw the sprite
-         DrawTexturePro(rObj->source->texture, sourceRec, destRec, Origin, rObj->rotation, WHITE);
-      #ifdef BBOX
-         DrawRectangleLines(rObj->position.x-Origin.x, rObj->position.y-Origin.y, destRec.width, destRec.height, RED);
-         DrawRectangle(rObj->position.x-2, rObj->position.y-4, 4, 4, RED);
+            // scale the origin of the sprite
+            float xAnchor = ((rObj->source->frameWidth)*(rObj->source->origin.x))*abs(rObj->scale.x);
+            float yAnchor = ((rObj->source->frameHeight)*(rObj->source->origin.y))*abs(rObj->scale.y);
+            Vector2 Origin = { xAnchor, yAnchor };
 
-      #endif
+            // draw the sprite
+            DrawTexturePro(rObj->source->texture, sourceRec, destRec, Origin, rObj->rotation, rObj->drawColor);
+            #ifdef BBOX
+               DrawRectangleLines(rObj->position.x-Origin.x, rObj->position.y-Origin.y, destRec.width, destRec.height, RED);
+               DrawRectangle(rObj->position.x-2, rObj->position.y-4, 4, 4, RED);
+            #endif
+         }
+
+         last_fixed = rObj->fixed;
 
          // make the queue safe to be cleared
          rObj = nullptr;
@@ -100,11 +112,12 @@ void Renderer::Irender() {
 
       }
 
-   #ifdef DEBUG
-      DrawText(("FPS: " + std::to_string(GetFPS())).c_str(), 25, 25, 25, GOLD);
-   #endif
+      if(!last_fixed) EndMode2D();
 
-   EndMode2D();
+      #ifdef DEBUG
+         DrawText(("FPS: " + std::to_string(GetFPS())).c_str(), 25, 25, 25, GOLD);
+      #endif
+
    EndDrawing();
 
    // clear the queue
@@ -160,6 +173,15 @@ View* Renderer::IgetView(int id) const {
 /* ########################################################################################################## //
 ################################################################################################################
 // ########################################################################################################## */
+
+RenderObject::RenderObject() {
+   drawColor = WHITE;
+   frame = 0;
+   rotation = 0.0f;
+   depth = 0;
+   fixed = false;
+   fontSize = 10;
+}
 
 RenderObject::~RenderObject() {
    source = nullptr;

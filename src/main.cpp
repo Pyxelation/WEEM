@@ -18,7 +18,7 @@ int main() {
    Renderer::getView(0)->setTarget(player);
    Renderer::getView(0)->offset.x = 1.0f;
    Renderer::getView(0)->offset.y = 1.0f;
-   Renderer::getView(0)->smoothness = 0.1f;
+   Renderer::getView(0)->smoothness = 0.01f;
    Game::run();
 
    return 0;

@@ -1,12 +1,6 @@
 #ifndef WEEM_renderer_h
 #define WEEM_renderer_h
 
-// enable debug features
-#define DEBUG
-
-// draw the bounding boxes
-//#define BBOX
-
 #include <vector>
 #include <utility>
 
@@ -15,15 +9,21 @@
 #include "weem/vector.h"
 #include "weem/view.h"
 
-struct RenderObject {
-   Sprite* source;
-   int frame;
-   Vector2D position;
-   Vector2D scale;
-   float rotation;
-   int depth;
+class RenderObject {
+   public:
+      Sprite* source;
+      std::string text;
+      int fontSize;
+      Color drawColor;
+      int frame;
+      Vector2D position;
+      Vector2D scale;
+      float rotation;
+      int depth;
+      bool fixed;
 
-   ~RenderObject();
+      RenderObject();
+      ~RenderObject();
 };
 
 class Renderer {

@@ -49,6 +49,7 @@ Thumbs.db
 *.wmv
 
 # c++ vscode
+bin/
 output/
 .vscode/
 *.o

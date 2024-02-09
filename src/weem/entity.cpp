@@ -3,7 +3,12 @@
 
 Entity::Entity(int const x, int const y, float const frameSpeed, std::string sprite, bool visible, float xScale, float yScale, float rotation):
 position(Vector2D(x, y)), frameSpeed(frameSpeed), visible(visible), sprite(sprite) {
-   renderObject = new RenderObject{SpriteHandler::getSprite(sprite), 0, position, Vector2D(xScale, yScale), rotation, 0};
+   renderObject = new RenderObject; 
+   renderObject->source = SpriteHandler::getSprite(sprite);
+   renderObject->position = position;
+   renderObject->scale = Vector2D(xScale, yScale);
+   renderObject->rotation = rotation;
+
    print("INFO: ENTITY: created with [SPRITE '"+sprite+"'] at [" + getPointer(this) + "]");
 }
 
@@ -30,6 +35,7 @@ void Entity::update() {
    renderObject->source = SpriteHandler::getSprite(sprite);
    renderObject->position = position;
    renderObject->depth = -position.y;
+   renderObject->fixed = false;
 
    if(visible) Renderer::addObject(renderObject);
 }

@@ -5,7 +5,6 @@
 #include "weem/macro.h"
 #include "vector.h"
 
-
 class View {
    public:
       View(); // default constructor
@@ -38,6 +37,10 @@ class View {
    private:
       int id;
       int target; // id of entity to follow
+
+      Vector2D true_position; // where the camera is moving towards
+      Vector2D true_offset; // the offset in coordinates
+
 
 };
 

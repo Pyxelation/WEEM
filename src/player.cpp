@@ -38,10 +38,23 @@ void Player::update() {
    position += velocity.normalized() * speed * GetFrameTime();
    renderObject->position = position;
    renderObject->depth = -position.y;
+   renderObject->fixed = false;
 
    if(IsKeyPressed(KEY_ENTER)) renderObject->scale.flipX();
 
    if(velocity.x != 0 && velocity.signX() != renderObject->scale.signX()) renderObject->scale.flipX();
 
    if(visible) Renderer::addObject(renderObject);
+   
+   #ifdef LOCATOR // draw players coords
+      RenderObject* locator = new RenderObject;
+      *locator = *renderObject;
+      locator->position = Vector2D(25, Renderer::getWindowHeight() - 40);
+      locator->text = "x: " + to_pstring(position.x, 1) + "\ny: " + to_pstring(position.y, 1);
+      locator->drawColor = BLACK;
+      locator->fontSize = 15;
+      locator->fixed = true;
+      locator->depth = 100;
+      Renderer::addObject(locator);
+   #endif
 }
