@@ -9,13 +9,25 @@
 #include "weem/vector.h"
 #include "weem/view.h"
 
+enum RenderType {
+   _sprite,
+   _text,
+   _rectangle,
+   _rectangleLines
+};
+
+struct RenderSource {
+   RenderType type = _sprite;
+   Sprite* spriteSource = nullptr;
+   std::string textSource;
+   size_t fontSize = 10;
+   Rectangle rectSource;
+};
+
 class RenderObject {
    public:
-      Sprite* source;
-      std::string text;
-      int fontSize;
+      RenderSource source;
       Color drawColor;
-      int frame;
       Vector2D position;
       Vector2D scale;
       float rotation;

@@ -68,40 +68,51 @@ void Renderer::Irender() {
             EndMode2D();
          }
 
-         if(!(rObj->text.empty())) { // render text
-            DrawText((rObj->text).c_str(), rObj->position.x, rObj->position.y, rObj->fontSize, rObj->drawColor);
-         } else { // render a sprite
-            // check if there is a texture loaded
-            if(rObj->source->frameHeight == 0 || rObj->source->frameWidth == 0) continue;
+         if(rObj->source.type == _text) { // render text
+            DrawText((rObj->source.textSource).c_str(), rObj->position.x, rObj->position.y, rObj->source.fontSize, rObj->drawColor);
+
+         } else if(rObj->source.type == _sprite) { // render a sprite
+            // check if the texture is valid
+            if(rObj->source.spriteSource->frameHeight == 0 || rObj->source.spriteSource->frameWidth == 0) continue;
+
+            // how big is a frame
+            int frameWidth = rObj->source.spriteSource->frameWidth;
+            int frameHeight = rObj->source.spriteSource->frameHeight;
 
             // get the indexes of the frame
-            int xIndex = (rObj->frame)%((rObj->source->texture.width)/(rObj->source->frameWidth));
-            int yIndex = (rObj->frame)/((rObj->source->texture.width)/(rObj->source->frameWidth));
+            int xIndex = (rObj->source.spriteSource->frameIndex)%((rObj->source.spriteSource->texture.width)/frameWidth);
+            int yIndex = (rObj->source.spriteSource->frameIndex)/((rObj->source.spriteSource->texture.width)/frameWidth);
 
             // convert the indexes into coordinates within the texture
-            float recX = xIndex*(rObj->source->frameWidth);
-            float recY = yIndex*(rObj->source->frameHeight);
-            // get the with of the frame and if it needs to be flipped
-            float recWidth = (rObj->source->frameWidth)*rObj->scale.signX();
-            float recHeight = (rObj->source->frameHeight)*rObj->scale.signY();
-            Rectangle sourceRec = { recX, recY, recWidth, recHeight };
+            Rectangle sourceRec = {
+               (float)(xIndex*frameWidth),
+               (float)(yIndex*frameHeight),
+               // flip the width/height to invert the image
+               (float)(frameWidth*rObj->scale.signX()),
+               (float)(frameHeight*rObj->scale.signY())
+            };
 
             // scale the sprite
-            float drawWidth = (rObj->source->frameWidth)*abs(rObj->scale.x);
-            float drawHeight = (rObj->source->frameHeight)*abs(rObj->scale.y);
-            Rectangle destRec = { rObj->position.x, rObj->position.y, drawWidth, drawHeight };
+            Rectangle destRec = { 
+               rObj->position.x, //x
+               rObj->position.y, //y
+               ((float)frameWidth)*abs(rObj->scale.x), //width
+               ((float)frameHeight)*abs(rObj->scale.y) // height
+            };
 
             // scale the origin of the sprite
-            float xAnchor = ((rObj->source->frameWidth)*(rObj->source->origin.x))*abs(rObj->scale.x);
-            float yAnchor = ((rObj->source->frameHeight)*(rObj->source->origin.y))*abs(rObj->scale.y);
-            Vector2 Origin = { xAnchor, yAnchor };
+            Vector2 Origin = {
+               ((float)frameWidth*(rObj->source.spriteSource->origin.x))*abs(rObj->scale.x), // x anchor
+               ((float)frameHeight*(rObj->source.spriteSource->origin.y))*abs(rObj->scale.y) // y anchor
+            };
+            
 
             // draw the sprite
-            DrawTexturePro(rObj->source->texture, sourceRec, destRec, Origin, rObj->rotation, rObj->drawColor);
-            #ifdef BBOX
-               DrawRectangleLines(rObj->position.x-Origin.x, rObj->position.y-Origin.y, destRec.width, destRec.height, RED);
-               DrawRectangle(rObj->position.x-2, rObj->position.y-4, 4, 4, RED);
-            #endif
+            DrawTexturePro(rObj->source.spriteSource->texture, sourceRec, destRec, Origin, rObj->rotation, rObj->drawColor);
+
+            DrawRectangleLines(rObj->position.x-Origin.x, rObj->position.y-Origin.y, destRec.width, destRec.height, RED);
+            DrawRectangle(rObj->position.x-2, rObj->position.y-4, 4, 4, RED);
+
          }
 
          last_fixed = rObj->fixed;
@@ -114,9 +125,8 @@ void Renderer::Irender() {
 
       if(!last_fixed) EndMode2D();
 
-      #ifdef DEBUG
+      if(DEBUG)
          DrawText(("FPS: " + std::to_string(GetFPS())).c_str(), 25, 25, 25, GOLD);
-      #endif
 
    EndDrawing();
 
@@ -176,13 +186,11 @@ View* Renderer::IgetView(int id) const {
 
 RenderObject::RenderObject() {
    drawColor = WHITE;
-   frame = 0;
    rotation = 0.0f;
    depth = 0;
    fixed = false;
-   fontSize = 10;
 }
 
 RenderObject::~RenderObject() {
-   source = nullptr;
+   source.spriteSource = nullptr;
 }

@@ -71,15 +71,35 @@ Vector2D& Vector2D::operator/=(float num) {
    return *this;
 }
 
-void Vector2D::normalize() {
+void Vector2D::normalize(bool rounded, int dec) {
    float l = length();
    x /= l;
    y /= l;
+   if(!rounded) return;
+   x = roundf(x, dec);
+   y = roundf(y, dec);
 }
 
-Vector2D Vector2D::normalized() const {
+Vector2D Vector2D::normalized(bool rounded, int dec) const {
    if(x == 0 && y == 0) return Vector2D(0, 0);
-   return Vector2D(x/length(), y/length());
+   if(!rounded) return Vector2D(x/length(), y/length());
+   else return Vector2D(
+      roundf(x/length(), dec),
+      roundf(y/length(), dec)
+   );
+}
+
+// round the axis to a certain decimal place
+void Vector2D::round(int dec) {
+   x = roundf(x, dec);
+   y = roundf(y, dec);
+}
+
+Vector2D Vector2D::rounded(int dec) const {
+   return Vector2D(
+      roundf(x, dec),
+      roundf(y, dec)
+   );
 }
 
 float Vector2D::angle() const {

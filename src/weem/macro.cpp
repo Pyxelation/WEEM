@@ -1,4 +1,5 @@
 #include <sstream>
+#include <cmath>
 
 #include "weem/macro.h"
 
@@ -21,6 +22,15 @@ void print(std::string input, level level) {
          std::cout << "\033[31m" << input << "\033[0m" << std::endl;
       break;
    }
+}
+
+// round a floating point number to a specific decimal count
+float roundf(float value, int dec) {
+   float result = (int)value;
+   if(dec == 0) return result;
+   float rest = value - result;
+   rest = ((int)(rest * pow(10, dec)))/pow(10, dec);
+   return result + rest;
 }
 
 // return a string containing the given pointer

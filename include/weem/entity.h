@@ -12,7 +12,7 @@
 class Entity {
    public:
       // constructor
-      Entity(int const x, int const y, float const frameSpeed, std::string sprite="", bool visible=true, float xScale=1.0f, float yScale=1.0f, float rotation=0.0f);
+      Entity(int const x, int const y, std::string sprite="", bool visible=true, bool solid=true, float xScale=1.0f, float yScale=1.0f, float rotation=0.0f);
       virtual ~Entity();
 
       // set the id of the entity
@@ -22,7 +22,7 @@ class Entity {
 
       int getId() const;
       
-      void setSprite(std::string sprite);
+      void setSprite(std::string sprite, float frameSpeed = 0.0f, size_t frameIndex = 0);
 
       // update the entity data
       // called every frame
@@ -35,11 +35,14 @@ class Entity {
       // a vector containing the x and y position of the entity
       Vector2D position;
 
-      // how fast is the sprite
-      float frameSpeed;
+      // rectangle used as the bounding box of the entity
+      Rectangle bounds;
 
       // if the entity should be rendered
       bool visible;
+
+      // if the entity can collide
+      bool solid;
    
    protected:
       // sprite of the entity

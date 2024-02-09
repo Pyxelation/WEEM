@@ -10,8 +10,10 @@ class Vector2D {
       Vector2D(float const x, float const y);
       Vector2D(int const x, int const y);
 
-      void normalize();
-      Vector2D normalized() const;
+      void normalize(bool rounded = false, int dec = 0);
+      Vector2D normalized(bool rounded = false, int dec = 0) const;
+      void round(int dec = 0);
+      Vector2D rounded(int dec = 0) const;
       float angle() const;
       float length() const;
       int signX() const;

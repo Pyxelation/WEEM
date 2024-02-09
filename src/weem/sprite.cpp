@@ -3,7 +3,7 @@
 #include "weem/vector.h"
 
 Sprite::Sprite(std::string img_path, int const frame_x, int const frame_y, int const frames, Vector2 origin): 
-frames(frames), origin(origin) {
+origin(origin), frames(frames), frameIndex(0), frameSpeed(0.0f), frameCount(0) {
    print("INFO: SPRITE: created at [" + getPointer(this) + "]");
    if(origin.x > 1 || origin.x < 0) origin.x = 0;
    if(origin.y > 1 || origin.y < 0) origin.x = 0;
@@ -20,6 +20,17 @@ frames(frames), origin(origin) {
 
 Sprite::~Sprite() {
    print("INFO: SPRITE: deleted at [" + getPointer(this) + "]");
+}
+
+void Sprite::update() {
+   frameCount += GetFrameTime();
+   if(frameCount >= (1.0f/frameSpeed)) {
+      frameIndex++;
+      if((int)frameIndex > frames) frameIndex = 0;
+      frameCount = 0.0f;
+
+   }
+
 }
 
 /* ########################################################################################################## //

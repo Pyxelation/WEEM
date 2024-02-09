@@ -2,9 +2,9 @@
 #define WEEM_macro_h
 
 // debug options
-#define DEBUG
-//#define BBOX
-#define LOCATOR
+static bool DEBUG = true;
+static bool BBOX = true;
+static bool LOCATOR = true;
 
 // Includes
 #include <iostream>
@@ -24,6 +24,8 @@ enum level {
 const int noone = -1;
 
 void print(std::string input, level level=level::INFO);
+
+float roundf(float value, int dec = 0);
 
 std::string getPointer(void* ptr);
 

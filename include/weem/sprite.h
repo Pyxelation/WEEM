@@ -16,18 +16,20 @@ struct Sprite {
    Sprite(std::string img_path, int const frame_x, int const frame_y, int const frames, Vector2 origin={0.0f, 0.0f});
    ~Sprite();
 
-   // amount of frames
-   int frames;
+   void update();
 
-   // the texture of the sprite
-   Texture2D texture;
-   // the height of an individual frame
-   int frameHeight;
-   // the width of an individual frame
-   int frameWidth;
-   // origin of the sprite
+   Texture2D texture; //the sprite's texture
+
    // values should be between 0 and 1, i.e. 0.73f
-   Vector2 origin;
+   Vector2 origin; // origin of the sprite
+
+   /// @brief sprite frame related variables/functions
+   int frames;          // amount of frames the sprite has
+   size_t frameIndex;   // what frame is currently used
+   float frameSpeed;    // how fast the frames change
+   float frameCount;    // keep track of seconds since last frame
+   int frameHeight;     // the height of an individual frame
+   int frameWidth;      // the width of an individual frame
 };
 
 /* ########################################################################################################## //

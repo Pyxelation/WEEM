@@ -2,9 +2,9 @@
 
 #include "player.h"
 
-Player::Player(int const x, int const y, float const frameSpeed, std::string sprite, bool visible, float xScale, float yScale, int rotation):
-Entity(x, y, frameSpeed, sprite, visible, xScale, yScale, rotation) {
-   // empty
+Player::Player(int const x, int const y, std::string sprite, bool visible, bool solid, float xScale, float yScale, float rotation):
+Entity(x, y, sprite, visible, solid, xScale, yScale, rotation) {
+   setSprite("sPlayerIdle", 6.0f);
 }
 
 Player::~Player() {
@@ -12,6 +12,9 @@ Player::~Player() {
 }
 
 void Player::update() {
+   if(renderObject->source.type == _sprite)
+      renderObject->source.spriteSource->update();
+   
    float speed = 210;
 
    // get input
@@ -20,19 +23,20 @@ void Player::update() {
       (float)(IsKeyDown(KEY_S) - IsKeyDown(KEY_W))
    );
 
-   if(velocity.length() == 0) {
-      setSprite("sPlayerIdle");
-      frameSpeed = 5;
-   } else {
-      setSprite("sPlayerRun");
-      frameSpeed = 12;
+   if(IsKeyPressed(KEY_ENTER)) {
+      renderObject->scale.flipX();
+      position.x = ((int)position.x);
+      position.y = ((int)position.y);
    }
 
-   frameCount++;
-   if(frameCount >= (float)GetFPS()/frameSpeed) {
-      frameCount = 0;
-      renderObject->frame++;
-      if((renderObject->frame) >= (renderObject->source->frames)) renderObject->frame = 0;
+   if(velocity.length() == 0) {
+      if(sprite != "sPlayerIdle") {
+         setSprite("sPlayerIdle", 6.0f);
+         position = position.rounded();
+      }
+   } else {
+      if(sprite != "sPlayerRun") 
+         setSprite("sPlayerRun", 14.0f);
    }
 
    position += velocity.normalized() * speed * GetFrameTime();
@@ -40,21 +44,20 @@ void Player::update() {
    renderObject->depth = -position.y;
    renderObject->fixed = false;
 
-   if(IsKeyPressed(KEY_ENTER)) renderObject->scale.flipX();
-
    if(velocity.x != 0 && velocity.signX() != renderObject->scale.signX()) renderObject->scale.flipX();
 
    if(visible) Renderer::addObject(renderObject);
-   
-   #ifdef LOCATOR // draw players coords
+
+   if(DEBUG && LOCATOR) { // draw players coords
       RenderObject* locator = new RenderObject;
       *locator = *renderObject;
+      locator->source.type = _text;
       locator->position = Vector2D(25, Renderer::getWindowHeight() - 40);
-      locator->text = "x: " + to_pstring(position.x, 1) + "\ny: " + to_pstring(position.y, 1);
+      locator->source.textSource = "x: " + to_pstring(position.x, 1) + "\ny: " + to_pstring(position.y, 1);
       locator->drawColor = BLACK;
-      locator->fontSize = 15;
+      locator->source.fontSize = 15;
       locator->fixed = true;
       locator->depth = 100;
       Renderer::addObject(locator);
-   #endif
+   }
 }
