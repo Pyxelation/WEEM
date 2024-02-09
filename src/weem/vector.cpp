@@ -72,8 +72,9 @@ Vector2D& Vector2D::operator/=(float num) {
 }
 
 void Vector2D::normalize() {
-   x /= length();
-   y /= length();
+   float l = length();
+   x /= l;
+   y /= l;
 }
 
 Vector2D Vector2D::normalized() const {
