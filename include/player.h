@@ -6,11 +6,14 @@
 class Player: public Entity {
    public:
       // constructor
-      Player(int const x, int const y, std::string sprite="", bool visible=true, bool solid=true, float xScale=1.0f, float yScale=1.0f, float rotation=0.0f);
+      Player(int const x, int const y, std::string sprite="", bool visible=true, bool solid=true, Vector2D scale={1.0f, 1.0f}, float rotation=0.0f);
       // deconstructor
       ~Player();
 
       float speed = 3.5f;
+
+      RenderObject* debug_locator;
+      RenderObject* debug_bbox;
 
       // update the entity
       // called every frame

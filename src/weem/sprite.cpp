@@ -40,14 +40,16 @@ void Sprite::update() {
 SpriteHandler::~SpriteHandler() {
    for (auto const& [key, val] : instance().sprites) {
       if(val != nullptr) {
-         print("INFO: SPRITE: HANDLER: deleted sprite [" + key + "]");
+         print("SPRITE: HANDLER: deleted sprite [" + key + "]");
          delete val;
       }
    }
-   print("INFO: SPRITE: HANDLER: deleted at [" + getPointer(this) + "]");
+   print("SPRITE: HANDLER: deleted at [" + getPointer(this) + "]");
 }
 
 Sprite* SpriteHandler::IgetSprite(std::string subPath) const {
+   if(!instance().spriteExists(subPath))
+      print("SPRITE: HANDLER: Sprite \"" + subPath + "\" does not exist..", ERROR);
    return instance().sprites[subPath];
 }
 
@@ -69,5 +71,5 @@ void SpriteHandler::IaddSprite(std::string img_path, int const frame_x, int cons
    Sprite* sprite = new Sprite(img_path, frame_x, frame_y, frames, origin);
    instance().sprites.emplace(key, sprite);
    sprite = nullptr;
-   print("INFO: SPRITE: HANDLER: Added sprite [" + sub_path + "] to the map");
+   print("SPRITE: HANDLER: Added sprite [" + sub_path + "] to the map");
 }

@@ -12,7 +12,7 @@ position(position), zoom(zoom), rotation(rotation), offset(offset), smoothness(s
 }
 
 View::~View() {
-   print(("INFO: VIEW: view [ID "+std::to_string(id)+"] deleted at ["+getPointer(this)+"]").c_str());
+   print(("VIEW: view [ID "+std::to_string(id)+"] deleted at ["+getPointer(this)+"]").c_str());
 }
 
 void View::setId(int id) {
@@ -39,7 +39,7 @@ void View::updatePosition() {
 
 void View::setTarget(int target) {
    this->target = target;
-   print(("INFO: VIEW: view [ID "+std::to_string(id)+"] target set to entity [ID "+std::to_string(target).c_str()+"]").c_str());
+   print(("VIEW: view [ID "+std::to_string(id)+"] target set to entity [ID "+std::to_string(target).c_str()+"]").c_str());
 }
 
 void View::removeTarget() {

@@ -12,7 +12,7 @@
 class Entity {
    public:
       // constructor
-      Entity(int const x, int const y, std::string sprite="", bool visible=true, bool solid=true, float xScale=1.0f, float yScale=1.0f, float rotation=0.0f);
+      Entity(int const x, int const y, std::string sprite="", bool visible=true, bool solid=true, Vector2D scale={1.0f, 1.0f}, float rotation=0.0f);
       virtual ~Entity();
 
       // set the id of the entity
@@ -28,7 +28,6 @@ class Entity {
       // called every frame
       virtual void update();
 
-
       // an object containing all render specific variables
       RenderObject* renderObject;
 
@@ -37,6 +36,9 @@ class Entity {
 
       // rectangle used as the bounding box of the entity
       Rectangle bounds;
+
+      // scale for drawing and bounds
+      Vector2D scale;
 
       // if the entity should be rendered
       bool visible;

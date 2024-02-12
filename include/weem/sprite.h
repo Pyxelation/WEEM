@@ -20,7 +20,7 @@ struct Sprite {
 
    Texture2D texture; //the sprite's texture
 
-   // values should be between 0 and 1, i.e. 0.73f
+   // values should be between 0(L) and 1(R), i.e. 0.73f
    Vector2 origin; // origin of the sprite
 
    /// @brief sprite frame related variables/functions

@@ -71,6 +71,10 @@ void Renderer::Irender() {
          if(rObj->source.type == _text) { // render text
             DrawText((rObj->source.textSource).c_str(), rObj->position.x, rObj->position.y, rObj->source.fontSize, rObj->drawColor);
 
+         } else if(rObj->source.type == _rectangleLines) {
+            
+            DrawRectangleLinesEx(rObj->source.rectSource, 1, rObj->drawColor);
+
          } else if(rObj->source.type == _sprite) { // render a sprite
             // check if the texture is valid
             if(rObj->source.spriteSource->frameHeight == 0 || rObj->source.spriteSource->frameWidth == 0) continue;
@@ -110,9 +114,6 @@ void Renderer::Irender() {
             // draw the sprite
             DrawTexturePro(rObj->source.spriteSource->texture, sourceRec, destRec, Origin, rObj->rotation, rObj->drawColor);
 
-            DrawRectangleLines(rObj->position.x-Origin.x, rObj->position.y-Origin.y, destRec.width, destRec.height, RED);
-            DrawRectangle(rObj->position.x-2, rObj->position.y-4, 4, 4, RED);
-
          }
 
          last_fixed = rObj->fixed;
@@ -148,14 +149,14 @@ int Renderer::IaddView(View* view) {
       views.push_back(view);
    }
 
-   print(("INFO: RENDERER: view at [" + getPointer(view) + "] has been added with id " + std::to_string(index)).c_str(), level::INFO);
+   print(("RENDERER: view at [" + getPointer(view) + "] has been added with id " + std::to_string(index)).c_str(), level::INFO);
    view = nullptr;
    return index;
 }
 
 void Renderer::IremoveView(int id) {
    if(id < 0) {
-      print(("WARNING: RENDERER: id " + std::to_string(id) + " of view to be deleted is invalid!..").c_str(), level::WARNING);
+      print(("RENDERER: id " + std::to_string(id) + " of view to be deleted is invalid!..").c_str(), level::WARNING);
       return;
    }
 
@@ -174,7 +175,7 @@ void Renderer::IremoveView(int id) {
 
 View* Renderer::IgetView(int id) const {
    if(id < 0 || (size_t)id >= views.size()) {
-      print("ERROR: RENDERER: view with index " + std::to_string(id) + " does not exist", level::ERROR);
+      print("RENDERER: view with index " + std::to_string(id) + " does not exist", level::ERROR);
       return nullptr;
    }
    return views[id];

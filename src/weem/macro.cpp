@@ -11,15 +11,15 @@ void print(std::string input, level level) {
    switch(level) {
       default:
       case level::INFO:
-         std::cout << input << std::endl;
+         std::cout << "INFO: " << input << std::endl;
       break;
 
       case level::WARNING:
-         std::cout << "\033[33m" << input << "\033[0m" << std::endl;
+         std::cout << "WARNING: " << "\033[33m" << input << "\033[0m" << std::endl;
       break;
 
       case level::ERROR:
-         std::cout << "\033[31m" << input << "\033[0m" << std::endl;
+         std::cout << "ERROR: " << "\033[31m" << input << "\033[0m" << std::endl;
       break;
    }
 }

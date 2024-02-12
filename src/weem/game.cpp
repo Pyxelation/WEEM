@@ -2,7 +2,7 @@
 #include "weem/macro.h"
 
 Game::Game() {
-   print("INFO: GAME: created at [" + getPointer(this) + "]");
+   print("GAME: created at [" + getPointer(this) + "]");
 }
 
 Game::~Game() {
@@ -10,7 +10,7 @@ Game::~Game() {
       instance().removeEntity(i);
    }
    CloseWindow();
-   print("INFO: GAME: deleted at [" + getPointer(this) + "]");
+   print("GAME: deleted at [" + getPointer(this) + "]");
 }
 
 int Game::IaddEntity(Entity* entity) {
@@ -26,7 +26,7 @@ int Game::IaddEntity(Entity* entity) {
       entities.push_back(entity);
    }
 
-   print("INFO: GAME: entity at [" + getPointer(entity) + "] added with id " + std::to_string(index).c_str(), level::INFO);
+   print("GAME: entity at [" + getPointer(entity) + "] added with id " + std::to_string(index).c_str(), level::INFO);
 
    entity = nullptr;
    return index;
@@ -34,7 +34,7 @@ int Game::IaddEntity(Entity* entity) {
 
 void Game::IremoveEntity(int id) {
    if(id < 0) {
-      print(("WARNING: GAME: id " + std::to_string(id) + " of instance to be deleted is invalid!..").c_str(), level::WARNING);
+      print(("GAME: id " + std::to_string(id) + " of instance to be deleted is invalid!..").c_str(), level::WARNING);
       return;
    }
 
@@ -64,10 +64,8 @@ void Game::Irun() {
       // draw the screen
       Renderer::render();
    }
-   print(
-      ("INFO: shutdown command given\nINFO:     > Time elapsed since startup: "+
-      std::to_string(GetTime())).c_str()
-   );
+   print("shutdown command given");
+   print(("     > Time elapsed since startup: "+ std::to_string(GetTime())).c_str());
 }
 
 void Game::IsetWindowTitle(std::string& title) {
