@@ -21,9 +21,6 @@ struct Sprite {
    std::string getName() const;
    bool isEmpty() const;
 
-   // the string's internal name
-   std::string name;
-
    // is this the original or not?
    bool copy = false;
 
@@ -40,7 +37,10 @@ struct Sprite {
    int frameHeight;     // the height of an individual frame
    int frameWidth;      // the width of an individual frame
 
-   friend class SpriteHandler;
+   private:
+      // the string's internal name
+      std::string name;
+      friend class SpriteHandler;
 };
 
 /* ########################################################################################################## //

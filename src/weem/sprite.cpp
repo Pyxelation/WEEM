@@ -91,8 +91,8 @@ void SpriteHandler::IaddSprite(std::string img_path, int const frame_x, int cons
    }
 
    Sprite* sprite = new Sprite(img_path, frame_x, frame_y, frames, origin);
-   instance().sprites.emplace(key, sprite);
    sprite->name = key;
+   instance().sprites.emplace(key, sprite);
    sprite = nullptr;
-   print("SPRITE: HANDLER: Added sprite [" + sub_path + "] to the map");
+   print("SPRITE: HANDLER: Added sprite [" + key + "] to the map");
 }
