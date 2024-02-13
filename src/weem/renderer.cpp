@@ -77,15 +77,21 @@ void Renderer::Irender() {
 
          } else if(rObj->source.type == _sprite) { // render a sprite
             // check if the texture is valid
-            if(rObj->source.spriteSource->frameHeight == 0 || rObj->source.spriteSource->frameWidth == 0) continue;
+            if(
+               rObj->source.spriteSource.frameHeight == 0 || 
+               rObj->source.spriteSource.frameWidth == 0 ||
+               rObj->source.spriteSource.isEmpty()
+            ) {
+               goto drawSkip;
+            };
 
             // how big is a frame
-            int frameWidth = rObj->source.spriteSource->frameWidth;
-            int frameHeight = rObj->source.spriteSource->frameHeight;
+            int frameWidth = rObj->source.spriteSource.frameWidth;
+            int frameHeight = rObj->source.spriteSource.frameHeight;
 
             // get the indexes of the frame
-            int xIndex = (rObj->source.spriteSource->frameIndex)%((rObj->source.spriteSource->texture.width)/frameWidth);
-            int yIndex = (rObj->source.spriteSource->frameIndex)/((rObj->source.spriteSource->texture.width)/frameWidth);
+            int xIndex = (rObj->source.spriteSource.frameIndex)%((rObj->source.spriteSource.texture.width)/frameWidth);
+            int yIndex = (rObj->source.spriteSource.frameIndex)/((rObj->source.spriteSource.texture.width)/frameWidth);
 
             // convert the indexes into coordinates within the texture
             Rectangle sourceRec = {
@@ -106,15 +112,17 @@ void Renderer::Irender() {
 
             // scale the origin of the sprite
             Vector2 Origin = {
-               ((float)frameWidth*(rObj->source.spriteSource->origin.x))*abs(rObj->scale.x), // x anchor
-               ((float)frameHeight*(rObj->source.spriteSource->origin.y))*abs(rObj->scale.y) // y anchor
+               ((float)frameWidth*(rObj->source.spriteSource.origin.x))*abs(rObj->scale.x), // x anchor
+               ((float)frameHeight*(rObj->source.spriteSource.origin.y))*abs(rObj->scale.y) // y anchor
             };
             
 
             // draw the sprite
-            DrawTexturePro(rObj->source.spriteSource->texture, sourceRec, destRec, Origin, rObj->rotation, rObj->drawColor);
-
+            DrawTexturePro(rObj->source.spriteSource.texture, sourceRec, destRec, Origin, rObj->rotation, rObj->drawColor);
          }
+
+         // label for end of statement
+         drawSkip:
 
          last_fixed = rObj->fixed;
 
@@ -193,5 +201,5 @@ RenderObject::RenderObject() {
 }
 
 RenderObject::~RenderObject() {
-   source.spriteSource = nullptr;
+   // empty
 }

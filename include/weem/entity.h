@@ -12,7 +12,7 @@
 class Entity {
    public:
       // constructor
-      Entity(int const x, int const y, std::string sprite="", bool visible=true, bool solid=true, Vector2D scale={1.0f, 1.0f}, float rotation=0.0f);
+      Entity(int const x, int const y, bool visible=true, bool solid=true, Vector2D scale={1.0f, 1.0f}, float rotation=0.0f);
       virtual ~Entity();
 
       // set the id of the entity
@@ -48,7 +48,7 @@ class Entity {
    
    protected:
       // sprite of the entity
-      std::string sprite;
+      Sprite sprite;
       // the id of the entity
       int id;
       // frame counter

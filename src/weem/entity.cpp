@@ -1,8 +1,8 @@
 #include "weem/entity.h"
 #include "weem/macro.h"
 
-Entity::Entity(int const x, int const y, std::string sprite, bool visible, bool solid, Vector2D scale, float rotation):
-renderObject(new RenderObject), position(Vector2D(x, y)), scale(scale), visible(visible), solid(solid), sprite(sprite) {
+Entity::Entity(int const x, int const y, bool visible, bool solid, Vector2D scale, float rotation):
+renderObject(new RenderObject), position(Vector2D(x, y)), scale(scale), visible(visible), solid(solid) {
 
    print("ENTITY: created at [" + getPointer(this) + "]");
 }
@@ -19,10 +19,9 @@ void Entity::setId(int const id) {
 }
 
 void Entity::setSprite(std::string sprite, float frameSpeed, size_t frameIndex) {
-   this->sprite = sprite;
-   renderObject->source.spriteSource = SpriteHandler::getSprite(sprite);
-   renderObject->source.spriteSource->frameSpeed = frameSpeed;
-   renderObject->source.spriteSource->frameIndex = frameIndex % (renderObject->source.spriteSource->frames + 1);
+   this->sprite = SpriteHandler::getSprite(sprite);
+   this->sprite.frameSpeed = frameSpeed;
+   this->sprite.frameIndex = frameIndex % (renderObject->source.spriteSource.frames + 1);
 }
 
 int Entity::getId() const {

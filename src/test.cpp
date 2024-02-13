@@ -3,13 +3,13 @@
 #include "test.h"
 
 Test::Test(int const x, int const y, std::string sprite, bool visible, bool solid, Vector2D scale, float rotation):
-Entity(x, y, sprite, visible, solid, scale, rotation) {
+Entity(x, y, visible, solid, scale, rotation) {
    setSprite(sprite, 6.0f);
    bounds = {
       position.x, 
       position.y, 
-      renderObject->source.spriteSource->frameWidth * scale.x, 
-      renderObject->source.spriteSource->frameHeight * scale.y
+      this->sprite.frameWidth * scale.x, 
+      this->sprite.frameHeight * scale.y
    };
    debug_bbox = new RenderObject;
 }
@@ -19,15 +19,15 @@ Test::~Test() {
 }
 
 void Test::update() {
-   if(renderObject->source.type == _sprite)
-      renderObject->source.spriteSource->update();
+   sprite.update();
 
    bounds = {
-      position.x - (renderObject->source.spriteSource->origin.x * bounds.width), 
-      position.y - (renderObject->source.spriteSource->origin.y * bounds.height), 
+      position.x - (sprite.origin.x * bounds.width), 
+      position.y - (sprite.origin.y * bounds.height), 
       bounds.width, 
       bounds.height
    };
+   renderObject->source.spriteSource = sprite;
    renderObject->position = position;
    renderObject->scale = scale;
    renderObject->depth = -position.y;

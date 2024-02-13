@@ -3,7 +3,7 @@
 #include "player.h"
 
 Player::Player(int const x, int const y, std::string sprite, bool visible, bool solid, Vector2D scale, float rotation):
-Entity(x, y, sprite, visible, solid, scale, rotation) {
+Entity(x, y, visible, solid, scale, rotation) {
    setSprite(sprite, 6.0f);
    bounds = {
       position.x, 
@@ -21,8 +21,7 @@ Player::~Player() {
 }
 
 void Player::update() {
-   if(renderObject->source.type == _sprite)
-      renderObject->source.spriteSource->update();
+   sprite.update();
    
    float speed = 210;
 
@@ -39,23 +38,24 @@ void Player::update() {
    }
 
    if(velocity.length() == 0) {
-      if(sprite != "sPlayerIdle") {
+      if(sprite.getName() != "sPlayerIdle") {
          setSprite("sPlayerIdle", 6.0f);
          position = position.rounded();
       }
    } else {
-      if(sprite != "sPlayerRun") 
+      if(sprite.getName() != "sPlayerRun") 
          setSprite("sPlayerRun", 14.0f);
    }
 
    position += velocity.normalized() * speed * GetFrameTime();
    if(velocity.x != 0 && velocity.signX() != scale.signX()) scale.flipX();
    bounds = {
-      position.x - (renderObject->source.spriteSource->origin.x * bounds.width), 
-      position.y - (renderObject->source.spriteSource->origin.y * bounds.height), 
+      position.x - (sprite.origin.x * bounds.width), 
+      position.y - (sprite.origin.y * bounds.height), 
       bounds.width, 
       bounds.height
    };
+   renderObject->source.spriteSource = sprite;
    renderObject->position = position;
    renderObject->scale = scale;
    renderObject->depth = -position.y;

@@ -14,9 +14,18 @@ struct Sprite {
    // frames is the total amount of frames in the image
    // frameSpeed is how fast you want the frame to change
    Sprite(std::string img_path, int const frame_x, int const frame_y, int const frames, Vector2 origin={0.0f, 0.0f});
+   Sprite();
    ~Sprite();
 
    void update();
+   std::string getName() const;
+   bool isEmpty() const;
+
+   // the string's internal name
+   std::string name;
+
+   // is this the original or not?
+   bool copy = false;
 
    Texture2D texture; //the sprite's texture
 
@@ -30,6 +39,8 @@ struct Sprite {
    float frameCount;    // keep track of seconds since last frame
    int frameHeight;     // the height of an individual frame
    int frameWidth;      // the width of an individual frame
+
+   friend class SpriteHandler;
 };
 
 /* ########################################################################################################## //
@@ -51,7 +62,7 @@ class SpriteHandler {
       static bool spriteExists(std::string subPath) {
          return instance().IspriteExists(subPath);
       }
-      static Sprite* getSprite(std::string subPath) {
+      static Sprite getSprite(std::string subPath) {
          return instance().IgetSprite(subPath);
       }
 
@@ -65,7 +76,7 @@ class SpriteHandler {
 
    private:
       bool IspriteExists(std::string subpath) const;
-      Sprite* IgetSprite(std::string subPath) const;
+      Sprite IgetSprite(std::string subPath) const;
       void IaddSprite(std::string img_path, int const frame_x, int const frame_y, int const frames, Vector2 origin);
 
       // constructor

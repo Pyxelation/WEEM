@@ -18,7 +18,7 @@ enum RenderType {
 
 struct RenderSource {
    RenderType type = _sprite;
-   Sprite* spriteSource = nullptr;
+   Sprite spriteSource;
    std::string textSource;
    size_t fontSize = 10;
    Rectangle rectSource;
