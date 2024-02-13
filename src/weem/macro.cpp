@@ -15,11 +15,11 @@ void print(std::string input, level level) {
       break;
 
       case level::WARNING:
-         std::cout << "WARNING: " << "\033[33m" << input << "\033[0m" << std::endl;
+         std::cout << "\033[33m" << "WARNING: " << input << "\033[0m" << std::endl;
       break;
 
       case level::ERROR:
-         std::cout << "ERROR: " << "\033[31m" << input << "\033[0m" << std::endl;
+         std::cout << "\033[31m" << "ERROR: " << input << "\033[0m" << std::endl;
       break;
    }
 }
