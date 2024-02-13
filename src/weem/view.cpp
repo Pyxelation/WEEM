@@ -8,7 +8,7 @@ View::View(): zoom(1.0f), rotation(0.0f), smoothness(0.0f), target(-1) {
 
 View::View(Vector2 position, float zoom, float rotation, Vector2 offset, float smoothness, int target):
 position(position), zoom(zoom), rotation(rotation), offset(offset), smoothness(smoothness), target(target) {
-   true_position = this->position;
+   target_position = this->position;
 }
 
 View::~View() {
@@ -26,19 +26,22 @@ int View::getId() const {
 void View::updatePosition() {
    if(target == noone) return;
 
-   true_position = Game::getEntity(target)->position;
+   target_position = Game::getEntity(target)->position;
 
-   float deltaX = true_position.x - position.x;
-   float deltaY = true_position.y - position.y;
+   Vector2D delta = {
+      target_position.x - position.x,
+      target_position.y - position.y
+   };
+   if(delta.length() == 0) return;
 
-   position.x += deltaX * smoothness;
-   position.y += deltaY * smoothness;
-
-   true_offset = Vector2D(offset.x*(float)(Renderer::getWindowWidth()/2), offset.y*(float)(Renderer::getWindowHeight()/2));
+   position.x += delta.x * abs(1.0f - smoothness) * (60 * GetFrameTime());//absMin(delta.x, delta.x * (abs(delta.x) * smoothness));
+   position.y += delta.y * abs(1.0f - smoothness) * (60 * GetFrameTime());//absMin(delta.y, delta.y * (abs(delta.y) * smoothness));
+   if(delta.length() <= (0.5f * (60 * GetFrameTime()))) position = target_position;
 }
 
-void View::setTarget(int target) {
+void View::setTarget(int target, bool update) {
    this->target = target;
+   if(update) position = Game::getEntity(target)->position;
    print(("VIEW: view [ID "+std::to_string(id)+"] target set to entity [ID "+std::to_string(target).c_str()+"]").c_str());
 }
 
@@ -48,7 +51,7 @@ void View::removeTarget() {
 
 void View::updateView(Camera2D* camera) const {
    camera->target = position;
-   camera->offset = true_offset;
+   camera->offset = {offset.x*(float)(Renderer::getWindowWidth()/2), offset.y*(float)(Renderer::getWindowHeight()/2)};
    camera->rotation = rotation;
    camera->zoom = zoom;
 }

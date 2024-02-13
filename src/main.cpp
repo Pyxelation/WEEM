@@ -4,7 +4,7 @@
 #include "test.h"
 
 int main() {
-   //SetTargetFPS(60);
+   SetTargetFPS(60);
 
    Game::init(450, 800, RAYWHITE, "WEEM Demo");
 
@@ -17,10 +17,10 @@ int main() {
    Game::addEntity(new Test(250, 250, "hash"));
    Game::addEntity(new Test(300, 250, "at"));
 
-   Renderer::getView(0)->setTarget(player);
+   Renderer::getView(0)->setTarget(player, true);
    Renderer::getView(0)->offset.x = 1.0f;
    Renderer::getView(0)->offset.y = 1.0f;
-   Renderer::getView(0)->smoothness = 0.01f;
+   Renderer::getView(0)->smoothness = 0.8f;
    Game::run();
 
    return 0;

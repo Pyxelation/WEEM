@@ -22,7 +22,7 @@ class View {
       void updatePosition();
 
       // set/remove target entity
-      void setTarget(int target);
+      void setTarget(int target, bool update = false);
       void removeTarget();
 
       // update a raylib camera object
@@ -32,14 +32,12 @@ class View {
       float zoom; // camera zoom (1.0f is default)
       float rotation; // rotation of the camera
       Vector2D offset; // offset on x and y axis of the screen (0.0 is middle, -1.0 is left/top, 1.0 is right/bottom)
-      float smoothness; // how fast the camera moves (1.0f is instant, 0.0f is not at all)
+      float smoothness; // how smooth the camera moves (0.0f is instant, 1.0f is no movement at all)
 
    private:
       int id;
       int target; // id of entity to follow
-
-      Vector2D true_position; // where the camera is moving towards
-      Vector2D true_offset; // the offset in coordinates
+      Vector2D target_position; // where the camera is moving towards
 
 
 };
