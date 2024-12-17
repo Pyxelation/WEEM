@@ -7,7 +7,7 @@ Game::Game() {
 
 Game::~Game() {
    for(size_t i=0;i<entities.size();i++) {
-      instance().removeEntity(i);
+      IremoveEntity(i);
    }
    CloseWindow();
    print("GAME: deleted at [" + getPointer(this) + "]");

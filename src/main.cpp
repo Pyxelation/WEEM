@@ -4,7 +4,7 @@
 #include "test.h"
 
 int main() {
-   SetTargetFPS(60);
+   // SetTargetFPS(60);
 
    Game::init(450, 800, RAYWHITE, "WEEM Demo");
 

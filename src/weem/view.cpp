@@ -34,8 +34,8 @@ void View::updatePosition() {
    };
    if(delta.length() == 0) return;
 
-   position.x += delta.x * abs(1.0f - smoothness) * (60 * GetFrameTime());//absMin(delta.x, delta.x * (abs(delta.x) * smoothness));
-   position.y += delta.y * abs(1.0f - smoothness) * (60 * GetFrameTime());//absMin(delta.y, delta.y * (abs(delta.y) * smoothness));
+   position.x += delta.x * abs(1.0f - smoothness) * (60 * GetFrameTime());
+   position.y += delta.y * abs(1.0f - smoothness) * (60 * GetFrameTime());
    if(delta.length() <= (0.5f * (60 * GetFrameTime()))) position = target_position;
 }
 
@@ -46,7 +46,7 @@ void View::setTarget(int target, bool update) {
 }
 
 void View::removeTarget() {
-   target = -1;
+   target = noone;
 }
 
 void View::updateView(Camera2D* camera) const {
